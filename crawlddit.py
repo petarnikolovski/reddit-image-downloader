@@ -61,7 +61,7 @@ def get_files_from_a_page(url):
 
     things = soup.find_all('div', attrs={'class' : ' thing id-t3'})
     images = deque({
-            'url' : None,
+            'url' : get_post_url(div),
             'filename' : None,
             'domain' : None,
             'post_title' : None,
@@ -76,6 +76,14 @@ def get_files_from_a_page(url):
     next_page = next_page_span.a['href'] if next_page_span else None
 
     return (images, next_page)
+
+
+def get_post_url(div):
+    """
+    Get url of a post.
+    """
+    p = div.find('p', attrs={'class' : 'title'})
+    return p.a['href']
 
 
 def get_politeness_factor():
