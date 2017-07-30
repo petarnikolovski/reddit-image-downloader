@@ -65,7 +65,7 @@ def get_files_from_a_page(url):
             'filename' : None,
             'domain' : get_post_domain(div),
             'post_title' : get_post_title(div),
-            'posted_on' : None,
+            'posted_on' : get_post_timestamp(div),
             'link_to_comments' : None,
             'on_page' : url,
             'html_status_token' : 0,
@@ -76,6 +76,14 @@ def get_files_from_a_page(url):
     next_page = next_page_span.a['href'] if next_page_span else None
 
     return (images, next_page)
+
+
+def get_post_timestamp(div):
+    """
+    Get time and date when post was created.
+    """
+    time = div.find('time')
+    return time['datetime'] if time.has_attr('datetime') else None
 
 
 def get_p_title_tag(div):
