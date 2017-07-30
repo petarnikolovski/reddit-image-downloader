@@ -25,7 +25,7 @@ def parse_arguments():
 
     crawlddit.py --help
     """
-    parser = ArgumentParser(dectiption='reddit /r downloader')
+    parser = ArgumentParser(description='reddit /r downloader')
 
     parser.add_argument('-v', '--verbose',
                         help='display download progress and information',
@@ -50,6 +50,32 @@ def make_soup(url, parser='lxml', selenium=False):
         driver.close()
         return BeautifulSoup(html, parser)
     return BeautifulSoup(urlopen(url).read(), parser)
+
+
+def get_files_from_a_page(url):
+    """
+    Get links and other information to all files from a single page.
+    Return link for next page if it exists.
+    """
+    soup = make_soup(url)
+
+    things = soup.find_all('div', attrs={'class' : ' thing id-t3'})
+    images = deque({
+            'url' : None,
+            'filename' : None,
+            'domain' : None,
+            'post_title' : None,
+            'posted_on' : None,
+            'link_to_comments' : None,
+            'on_page' : url,
+            'html_status_token' : 0,
+        } for div in things
+    )
+
+    next_page_span = soup.find('span', attrs={'class' : 'next-button'})
+    next_page = next_page_span.a['href'] if next_page_span else None
+
+    return (images, next_page)
 
 
 def get_politeness_factor():
