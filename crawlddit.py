@@ -2,6 +2,7 @@
 
 
 import os
+import re
 from argparse import ArgumentParser
 from urllib.request import urlopen
 from urllib.request import urlretrieve
@@ -57,9 +58,9 @@ def get_files_from_a_page(url):
     Get links and other information to all files from a single page.
     Return link for next page if it exists.
     """
-    soup = make_soup(url)
+    soup = make_soup(url, selenium=True)
 
-    things = soup.find_all('div', attrs={'class' : ' thing id-t3'})
+    things = soup.find_all('div', attrs={'class' : re.compile(r'\sthing\sid-t3.+')})
     images = deque({
             'url' : get_post_url(div),
             'filename' : None,
@@ -83,7 +84,8 @@ def get_link_to_comments(div):
     Get a link to a comment section.
     """
     li = div.find('li', attrs={'class' : 'first'})
-    return ''.join(['https://www.reddit.com', li.a['href']])
+    #return ''.join(['https://www.reddit.com', li.a['href']])
+    return li.a['href']
 
 
 def get_post_timestamp(div):
@@ -122,7 +124,7 @@ def get_post_title(div):
     """
     Get title of a post.
     """
-    return get_post_url(div).string
+    return get_p_title_tag(div).a.string
 
 
 def get_politeness_factor():
@@ -145,3 +147,8 @@ def get_politeness_factor():
 
 if __name__ == '__main__':
     verbose, url, destination = parse_arguments()
+
+    images, next_page = get_files_from_a_page(url)
+
+    print(images)
+    print(next_page)
