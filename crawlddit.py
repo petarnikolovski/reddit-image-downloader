@@ -66,7 +66,7 @@ def get_files_from_a_page(url):
             'domain' : get_post_domain(div),
             'post_title' : get_post_title(div),
             'posted_on' : get_post_timestamp(div),
-            'link_to_comments' : None,
+            'link_to_comments' : get_link_to_comments(div),
             'on_page' : url,
             'html_status_token' : 0,
         } for div in things
@@ -76,6 +76,14 @@ def get_files_from_a_page(url):
     next_page = next_page_span.a['href'] if next_page_span else None
 
     return (images, next_page)
+
+
+def get_link_to_comments(div):
+    """
+    Get a link to a comment section.
+    """
+    li = div.find('li', attrs={'class' : 'first'})
+    return ''.join(['https://www.reddit.com', li.a['href']])
 
 
 def get_post_timestamp(div):
