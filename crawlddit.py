@@ -64,7 +64,7 @@ def get_files_from_a_page(url):
             'url' : get_post_url(div),
             'filename' : None,
             'domain' : None,
-            'post_title' : None,
+            'post_title' : get_post_title(div),
             'posted_on' : None,
             'link_to_comments' : None,
             'on_page' : url,
@@ -84,6 +84,13 @@ def get_post_url(div):
     """
     p = div.find('p', attrs={'class' : 'title'})
     return p.a['href']
+
+
+def get_post_title(div):
+    """
+    Get title of a post.
+    """
+    return get_post_url(div).string
 
 
 def get_politeness_factor():
