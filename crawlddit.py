@@ -63,7 +63,7 @@ def get_files_from_a_page(url):
     images = deque({
             'url' : get_post_url(div),
             'filename' : None,
-            'domain' : None,
+            'domain' : get_post_domain(div),
             'post_title' : get_post_title(div),
             'posted_on' : None,
             'link_to_comments' : None,
@@ -78,12 +78,28 @@ def get_files_from_a_page(url):
     return (images, next_page)
 
 
+def get_p_title_tag(div):
+    """
+    Get <p> tag with class="title".
+    """
+    return div.find('p', attrs={'class' : 'title'})
+
+
 def get_post_url(div):
     """
     Get url of a post.
     """
-    p = div.find('p', attrs={'class' : 'title'})
+    p = get_p_title_tag(div)
     return p.a['href']
+
+
+def get_post_domain(div):
+    """
+    Get domain of a post.
+    """
+    p = get_p_title_tag(div)
+    span = p.find('span', attrs={'class' : 'domain'})
+    return span.a.string
 
 
 def get_post_title(div):
