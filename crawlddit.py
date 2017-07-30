@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 import os
 from argparse import ArgumentParser
 from urllib.request import urlopen
@@ -10,6 +11,7 @@ from collections import deque
 from time import sleep
 from math import log
 from math import exp
+
 
 def parse_arguments():
     """
@@ -34,6 +36,20 @@ def parse_arguments():
     args = parser.parse_args()
 
     return (args.verbose, args.URL, args.directory)
+
+
+def make_soup(url, parser='lxml', selenium=False):
+    """
+    Return a soup object. Default parser is lxml. Requests are made by
+    default using url.request library.
+    """
+    if selenium:
+        driver = webdriver.PhantomJS()
+        driver.get(url)
+        html = driver.page_source
+        driver.close()
+        return BeautifulSoup(html, parser)
+    return BeautifulSoup(urlopen(url).read(), parser)
 
 
 if __name__ == '__main__':
