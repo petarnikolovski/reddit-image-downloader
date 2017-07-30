@@ -1,6 +1,15 @@
 #!/usr/bin/python3
 
+import os
 from argparse import ArgumentParser
+from urllib.request import urlopen
+from urllib.request import urlretrieve
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from collections import deque
+from time import sleep
+from math import log
+from math import exp
 
 def parse_arguments():
     """
