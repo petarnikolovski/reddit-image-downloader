@@ -52,5 +52,23 @@ def make_soup(url, parser='lxml', selenium=False):
     return BeautifulSoup(urlopen(url).read(), parser)
 
 
+def get_politeness_factor():
+    """
+    Return politeness factor for reddit.com domain. Calculated according
+    to instructions given here:
+
+    https://stackoverflow.com/questions/8236046/typical-politeness-factor-for-a-web-crawler
+
+    Archived versions:
+    http://archive.is/AlBg0
+    https://web.archive.org/web/20170730001425/https://stackoverflow.com/questions/8236046/typical-politeness-factor-for-a-web-crawler
+    """
+    DOMAIN_AUTHORITY = 99
+    domain_size = DOMAIN_AUTHORITY // 10
+    if domain_size <= 5: domain_size = 5
+    minimal_crawl_time = min(exp(2.52166863221 + -0.530185027289 * log(domain_size)), 5)
+    return minimal_crawl_time
+
+
 if __name__ == '__main__':
     verbose, url, destination = parse_arguments()
