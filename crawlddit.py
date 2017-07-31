@@ -55,6 +55,14 @@ def make_soup(url, parser='lxml', selenium=False):
     return BeautifulSoup(urlopen(url).read(), parser)
 
 
+def make_beautiful_soup(url, driver, parser='lxml'):
+    """
+    Get soup object from url using selenium driver.
+    """
+    driver.get(url)
+    return BeautifulSoup(driver.page_source, parser)
+
+
 def get_all_posts(url, pages=0):
     """
     Crawl links of all posts, or posts from P number of pages. If P
@@ -68,7 +76,7 @@ def get_all_posts(url, pages=0):
     crawl = True
     page = 1 if pages else 0
     while (page <= pages) and crawl:
-        soup = make_beautiful soup(url, driver)
+        soup = make_beautiful_soup(url, driver)
         pictures, next_page = get_files_from_a_page(soup)
 
         images.extend(pictures)
