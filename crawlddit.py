@@ -64,7 +64,7 @@ def make_beautiful_soup(url, driver, parser='lxml'):
     return BeautifulSoup(driver.page_source, parser)
 
 
-def get_all_posts(url, pages=0):
+def get_all_posts(url, pages):
     """
     Crawl links of all posts, or posts from P number of pages. If P
     i.e. 'pages' is 0, then crawl all pages.
@@ -210,6 +210,7 @@ def print_all_domains(domains):
 if __name__ == '__main__':
     verbose, pages, url, destination = parse_arguments()
 
+    if not pages: pages = 0
     images = get_all_posts(url, pages)
 
     print(images)
