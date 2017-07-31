@@ -9,6 +9,7 @@ from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from collections import deque
+from itertools import groupby
 from time import sleep
 from math import log
 from math import exp
@@ -145,6 +146,29 @@ def get_politeness_factor():
     return minimal_crawl_time
 
 
+def get_all_domains(posts):
+    """
+    Get all domains from list of files.
+    """
+    domains = []
+    for post in posts:
+        domains.append(post['domain'])
+
+    domains.sort()
+    grouped_domains = []
+    for key, group in groupby(domains):
+        grouped_domains.append((len(list(group)), key))
+    return grouped_domains
+
+
+def print_all_domains(domains):
+    """
+    Prtin list of all domains appearing in /r group.
+    """
+    for domain in domains:
+        print(domain[0], domain[1])
+
+
 if __name__ == '__main__':
     verbose, url, destination = parse_arguments()
 
@@ -152,3 +176,5 @@ if __name__ == '__main__':
 
     print(images)
     print(next_page)
+    print(len(images))
+    print_all_domains(get_all_domains(images))
