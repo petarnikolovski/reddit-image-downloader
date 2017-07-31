@@ -15,6 +15,13 @@ from math import log
 from math import exp
 
 
+class Colors(object):
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    BOLD = '\033[1m'
+    NOCOLOR = '\033[0m'
+
+
 def parse_arguments():
     """
     Parse input arguments of the program. Two positional arguments are
