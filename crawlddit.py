@@ -32,12 +32,13 @@ def parse_arguments():
     parser.add_argument('-v', '--verbose',
                         help='display download progress and information',
                         action='store_true')
+    parser.add_argument('-p', help='crawl P number of pages', type=int)
     parser.add_argument('URL', help='source link')
     parser.add_argument('directory', help='destination directory')
 
     args = parser.parse_args()
 
-    return (args.verbose, args.URL, args.directory)
+    return (args.verbose, args.p, args.URL, args.directory)
 
 
 def make_soup(url, parser='lxml', selenium=False):
@@ -172,7 +173,7 @@ def print_all_domains(domains):
 
 
 if __name__ == '__main__':
-    verbose, url, destination = parse_arguments()
+    verbose, pages, url, destination = parse_arguments()
 
     images, next_page = get_files_from_a_page(url)
 
