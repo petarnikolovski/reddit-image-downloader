@@ -15,6 +15,9 @@ from math import log
 from math import exp
 
 
+FILE_FORMATS = ['.jpg', '.jpeg', '.png', '.gif', '.webm']
+
+
 class Colors(object):
     BLUE = '\033[94m'
     GREEN = '\033[92m'
