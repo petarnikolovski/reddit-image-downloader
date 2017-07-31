@@ -55,6 +55,35 @@ def make_soup(url, parser='lxml', selenium=False):
     return BeautifulSoup(urlopen(url).read(), parser)
 
 
+def get_all_posts(url, pages=0):
+    """
+    Crawl links of all posts, or posts from P number of pages. If P
+    i.e. 'pages' is 0, then crawl all pages.
+    """
+    # make driver
+    # get url and answer redirect, wait for redirect
+    driver = webdriver.PhantomJS()
+
+    images = []
+    crawl = True
+    page = 1 if pages else 0
+    while (page <= pages) and crawl:
+        soup = make_beautiful soup(url, driver)
+        pictures, next_page = get_files_from_a_page(soup)
+
+        images.extend(pictures)
+        url = next_page
+
+        if pages: page += 1
+        if not next_page: crawl = False
+    # as long as there are pages to crawl, crawl them,
+    # and append results / extend
+
+    # return list of posts
+    driver.close()
+    return images
+
+
 def get_files_from_a_page(url):
     """
     Get links and other information to all files from a single page.
