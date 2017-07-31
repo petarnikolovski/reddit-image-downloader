@@ -163,7 +163,9 @@ def get_all_domains(posts):
 
 def print_all_domains(domains):
     """
-    Prtin list of all domains appearing in /r group.
+    Print list of all domains appearing in /r group. First element is
+    number of times a domain appears in a posts list, second element is
+    corresponding domain name.
     """
     for domain in domains:
         print(domain[0], domain[1])
