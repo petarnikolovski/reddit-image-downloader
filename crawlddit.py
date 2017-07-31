@@ -59,6 +59,7 @@ def make_beautiful_soup(url, driver, parser='lxml'):
     """
     Get soup object from url using selenium driver.
     """
+    # get url and answer redirect, wait for redirect
     driver.get(url)
     return BeautifulSoup(driver.page_source, parser)
 
@@ -68,8 +69,6 @@ def get_all_posts(url, pages=0):
     Crawl links of all posts, or posts from P number of pages. If P
     i.e. 'pages' is 0, then crawl all pages.
     """
-    # make driver
-    # get url and answer redirect, wait for redirect
     driver = webdriver.PhantomJS()
 
     images = []
@@ -77,28 +76,23 @@ def get_all_posts(url, pages=0):
     page = 1 if pages else 0
     while (page <= pages) and crawl:
         soup = make_beautiful_soup(url, driver)
-        pictures, next_page = get_files_from_a_page(soup)
+        pictures, next_page = get_files_from_a_page(soup, url)
 
         images.extend(pictures)
         url = next_page
 
         if pages: page += 1
         if not next_page: crawl = False
-    # as long as there are pages to crawl, crawl them,
-    # and append results / extend
 
-    # return list of posts
     driver.close()
     return images
 
 
-def get_files_from_a_page(url):
+def get_files_from_a_page(soup, url=None):
     """
     Get links and other information to all files from a single page.
     Return link for next page if it exists.
     """
-    soup = make_soup(url, selenium=True)
-
     things = soup.find_all('div', attrs={'class' : re.compile(r'\sthing\sid-t3.+')})
     images = deque({
             'url' : get_post_url(div),
