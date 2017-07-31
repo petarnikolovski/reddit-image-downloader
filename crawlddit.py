@@ -73,7 +73,9 @@ def get_all_posts(url, pages=0):
 
     images = []
     crawl = True
+    crawl_time = get_politeness_factor()
     page = 1 if pages else 0
+
     while (page <= pages) and crawl:
         soup = make_beautiful_soup(url, driver)
         pictures, next_page = get_files_from_a_page(soup, url)
@@ -83,6 +85,8 @@ def get_all_posts(url, pages=0):
 
         if pages: page += 1
         if not next_page: crawl = False
+
+        sleep(crawl_time)
 
     driver.close()
     return images
@@ -206,9 +210,9 @@ def print_all_domains(domains):
 if __name__ == '__main__':
     verbose, pages, url, destination = parse_arguments()
 
-    images, next_page = get_files_from_a_page(url)
+    images = get_all_posts(url, pages)
 
     print(images)
-    print(next_page)
+    #print(next_page)
     print(len(images))
     print_all_domains(get_all_domains(images))
