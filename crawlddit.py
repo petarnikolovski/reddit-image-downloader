@@ -18,18 +18,13 @@ from utils.logtools import get_all_domains
 from utils.logtools import print_all_domains
 from utils.logtools import count_downloadable_images
 from utils.politeness import get_politeness_factor
+from utils.consoleaccessories import Colors
 from collections import deque
 from time import sleep
 
 
 FILE_FORMATS = ['.jpg', '.jpeg', '.png', '.gif', '.webm']
 DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
-
-class Colors(object):
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    BOLD = '\033[1m'
-    NOCOLOR = '\033[0m'
 
 
 def parse_arguments():
