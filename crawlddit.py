@@ -8,6 +8,10 @@ from urllib.request import urlopen
 from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 from collections import deque
 from itertools import groupby
 from time import sleep
@@ -67,11 +71,34 @@ def make_soup(url, parser='lxml', selenium=False):
 
 def make_beautiful_soup(url, driver, parser='lxml'):
     """
-    Get soup object from url using selenium driver.
+    Get soup object from url using selenium driver. If request is
+    redirected, then confirm redirect dialog.
     """
-    # get url and answer redirect, wait for redirect
     driver.get(url)
+
+    submit_exists = driver.find_element_by_xpath(
+        '//button[@type='submit'][@value='yes']'
+    )
+    if submit_exists:
+        confirm_redirect_dialog(driver)
+
     return BeautifulSoup(driver.page_source, parser)
+
+
+def confirm_redirect_dialog(driver):
+    """
+    If redirection dialog pops up, click confirm/continue button.
+    """
+    # '//button[@type='submit' and @value='yes']'
+    driver.find_element_by_xpath(
+        '//button[@type='submit'][@value='yes']'
+    ).click()
+
+    WebDriverWait(driver, 5).until(
+        EC.presence_of_an_element_located(
+            (By.XPATH, '//span[@class='next-button']')
+        )
+    )
 
 
 def get_all_posts(url, pages):
