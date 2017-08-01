@@ -177,7 +177,7 @@ def get_image_filename(url):
     """
     candidate = url.split('/')[-1]
     extension = known_file_format(url)
-    pattern = ''.join(['.+\\'], extension)
+    pattern = ''.join(['.+\\', extension])
     return re.match(pattern, candidate).group(0)
 
 
