@@ -22,7 +22,7 @@ from math import exp
 
 
 FILE_FORMATS = ['.jpg', '.jpeg', '.png', '.gif', '.webm']
-
+DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
 
 class Colors(object):
     BLUE = '\033[94m'
@@ -159,6 +159,13 @@ def get_files_from_a_page(soup, url=None):
     next_page = next_page_span.a['href'] if next_page_span else None
 
     return (images, next_page)
+
+
+def get_image(div):
+    """
+    Get image url and image filename.
+    """
+    pass
 
 
 def get_link_to_comments(div):
