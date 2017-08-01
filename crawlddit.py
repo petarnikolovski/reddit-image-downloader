@@ -223,6 +223,11 @@ def get_politeness_factor(domain):
     DOMAIN_AUTHORITY = {
         'reddit' : 99,
         'imgur' : 93,
+        'gfycat' : 70,
+        'tumblr' : 99, # tumblr allows crawl time of 1s https://www.tumblr.com/robots.txt
+        'instagram' : None, # instagram robots.txt forbids all bots
+        'blogspot' : None,
+        'other' : 0,
     }
     domain_size = DOMAIN_AUTHORITY[domain] // 10
     if domain_size <= 5: domain_size = 5
