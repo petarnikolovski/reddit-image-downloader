@@ -168,6 +168,16 @@ def get_image(div):
     pass
 
 
+def known_file_format(url):
+    """
+    Check if the url contains known file format extension.
+    """
+    for extension in FILE_FORMATS:
+        if extension in url:
+            return extension
+    return None
+
+
 def get_link_to_comments(div):
     """
     Get a link to a comment section.
