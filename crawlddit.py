@@ -4,6 +4,7 @@
 import os
 import re
 from argparse import ArgumentParser
+from contextlib import suppress
 from urllib.request import urlopen
 from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
@@ -12,6 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException
 from collections import deque
 from itertools import groupby
 from time import sleep
@@ -76,11 +78,13 @@ def make_beautiful_soup(url, driver, parser='lxml'):
     """
     driver.get(url)
 
-    submit_exists = driver.find_element_by_xpath(
-        "//button[@type='submit'][@value='yes']"
-    )
-    if submit_exists:
-        confirm_redirect_dialog(driver)
+    with suppress(NoSuchElementException):
+        submit_exists = driver.find_element_by_xpath(
+            "//button[@type='submit'][@value='yes']"
+        )
+
+        if submit_exists:
+            confirm_redirect_dialog(driver)
 
     return BeautifulSoup(driver.page_source, parser)
 
