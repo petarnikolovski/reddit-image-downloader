@@ -176,7 +176,6 @@ def get_image_link_from_allowed_domain(url, domain):
     """
     Use correct domain parser.
     """
-    DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
     if domain == 'reddit':
         return
     elif domain == 'imgur':
