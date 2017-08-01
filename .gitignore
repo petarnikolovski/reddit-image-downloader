@@ -18,4 +18,4 @@ pip-selfcheck.json
 geckodriver.log
 ghostdriver.log
 selenium/
-
+screenshot.png
