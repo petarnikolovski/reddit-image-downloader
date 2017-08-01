@@ -166,6 +166,16 @@ def get_image(div):
     return image_dictionary(None, None)
 
 
+def known_domain(url):
+    """
+    Check if the domain is in the list of known/allowed domains.
+    """
+    for domain in DOMAINS:
+        if domain in url:
+            return domain
+    return None
+
+
 def get_image_filename(url):
     """
     Get image file name from its url.
