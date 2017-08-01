@@ -95,7 +95,7 @@ def confirm_redirect_dialog(driver):
     ).click()
 
     WebDriverWait(driver, 5).until(
-        EC.presence_of_an_element_located(
+        EC.presence_of_element_located(
             (By.XPATH, "//span[@class='next-button']")
         )
     )
