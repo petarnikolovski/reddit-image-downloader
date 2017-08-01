@@ -167,7 +167,9 @@ def get_image(div):
     url = get_post_url(div)
     if known_file_format(url):
         return image_dictionary(url, get_image_filename(url))
-    return image_dictionary(None, None)
+    image_url = get_image_link_from_allowed_domain(url)
+    filename = get_image_filename(image_url) if image_url else None
+    return image_dictionary(image_url, filename)
 
 
 def get_image_link_from_allowed_domain(url, domain):
@@ -186,8 +188,9 @@ def get_image_link_from_allowed_domain(url, domain):
     elif domain == 'blogspot':
         return
     else:
-        pass
-    raise DomainMissingException('Unknown domain, missing parsing tools.')
+        return None
+    # ugly dangling else
+    # raise DomainMissingException('Unknown domain, missing parsing tools.')
 
 
 def known_domain(url):
