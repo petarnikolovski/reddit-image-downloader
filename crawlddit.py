@@ -165,7 +165,27 @@ def get_image(div):
     """
     Get image url and image filename.
     """
-    pass
+    url = get_post_url(div)
+    if known_file_format(url):
+        return image_dictionary(url, get_image_filename(url))
+    return image_dictionary(None, None)
+
+
+def get_image_filename(url):
+    """
+    Get image file name from its url.
+    """
+    candidate = url.split('/')[-1]
+    extension = known_file_format(url)
+    pattern = ''.join(['.+\\'], extension)
+    return re.match(pattern, candidate).group(0)
+
+
+def image_dictionary(url, filename):
+    """
+    Returns a dictionary with image url and corresponding filename.
+    """
+    return { 'image_url' : url, 'filename' : filename }
 
 
 def known_file_format(url):
