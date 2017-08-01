@@ -117,7 +117,7 @@ def get_all_posts(url, pages):
 
     images = []
     crawl = True
-    crawl_time = get_politeness_factor()
+    crawl_time = get_politeness_factor('reddit')
     page = 1 if pages else 0
 
     while (page <= pages) and crawl:
@@ -209,7 +209,7 @@ def get_post_title(div):
     return get_p_title_tag(div).a.string
 
 
-def get_politeness_factor():
+def get_politeness_factor(domain):
     """
     Return politeness factor for reddit.com domain. Calculated according
     to instructions given here:
@@ -220,8 +220,11 @@ def get_politeness_factor():
     http://archive.is/AlBg0
     https://web.archive.org/web/20170730001425/https://stackoverflow.com/questions/8236046/typical-politeness-factor-for-a-web-crawler
     """
-    DOMAIN_AUTHORITY = 99
-    domain_size = DOMAIN_AUTHORITY // 10
+    DOMAIN_AUTHORITY = {
+        'reddit' : 99,
+        'imgur' : 93,
+    }
+    domain_size = DOMAIN_AUTHORITY[domain] // 10
     if domain_size <= 5: domain_size = 5
     minimal_crawl_time = min(exp(2.52166863221 + -0.530185027289 * log(domain_size)), 5)
     return minimal_crawl_time
