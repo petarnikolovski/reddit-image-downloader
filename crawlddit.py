@@ -198,7 +198,7 @@ def parse_gfycat(url):
     """
     soup = make_soup(url)
     source = soup.find('source', attrs={'id' : 'webmSource'})
-    return source['src']
+    return source['src'] if source else None
 
 
 def known_domain(url):
