@@ -19,10 +19,7 @@ from utils.logtools import print_all_domains
 from utils.logtools import count_downloadable_images
 from utils.politeness import get_politeness_factor
 from collections import deque
-from itertools import groupby
 from time import sleep
-from math import log
-from math import exp
 
 
 FILE_FORMATS = ['.jpg', '.jpeg', '.png', '.gif', '.webm']

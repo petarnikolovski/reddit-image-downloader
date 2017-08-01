@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 
 
+from math import log
+from math import exp
+
+
 def get_politeness_factor(domain):
     """
     Return politeness factor for reddit.com domain. Calculated according
