@@ -77,7 +77,7 @@ def make_beautiful_soup(url, driver, parser='lxml'):
     driver.get(url)
 
     submit_exists = driver.find_element_by_xpath(
-        '//button[@type='submit'][@value='yes']'
+        "//button[@type='submit'][@value='yes']"
     )
     if submit_exists:
         confirm_redirect_dialog(driver)
@@ -91,12 +91,12 @@ def confirm_redirect_dialog(driver):
     """
     # '//button[@type='submit' and @value='yes']'
     driver.find_element_by_xpath(
-        '//button[@type='submit'][@value='yes']'
+        "//button[@type='submit'][@value='yes']"
     ).click()
 
     WebDriverWait(driver, 5).until(
         EC.presence_of_an_element_located(
-            (By.XPATH, '//span[@class='next-button']')
+            (By.XPATH, "//span[@class='next-button']")
         )
     )
 
