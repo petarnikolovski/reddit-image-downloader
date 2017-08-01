@@ -167,7 +167,7 @@ def get_image(div):
     url = get_post_url(div)
     if known_file_format(url):
         return image_dictionary(url, get_image_filename(url))
-    image_url = get_image_link_from_allowed_domain(url)
+    image_url = get_image_link_from_allowed_domain(url, known_domain(url))
     filename = get_image_filename(image_url) if image_url else None
     return image_dictionary(image_url, filename)
 
