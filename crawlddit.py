@@ -12,6 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from collections import deque
@@ -95,6 +96,11 @@ def confirm_redirect_dialog(driver):
     driver.find_element_by_xpath(
         "//button[@type='submit' and @value='yes']"
     ).click()
+    #button = driver.find_element_by_xpath(
+    #    "//button[@type='submit' and @value='yes']"
+    #)
+    #ActionChains(driver).move_to_element(button).perform()
+    #button.click()
 
     try:
         WebDriverWait(driver, 10).until(
