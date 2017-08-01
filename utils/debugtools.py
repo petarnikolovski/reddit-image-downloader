@@ -5,7 +5,7 @@ from itertools import groupby
 
 
 """
-Logging, debugging, and analysis tools.
+Debugging, and analysis tools.
 """
 
 

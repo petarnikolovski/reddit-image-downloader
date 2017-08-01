@@ -14,9 +14,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
-from utils.logtools import get_all_domains
-from utils.logtools import print_all_domains
-from utils.logtools import count_downloadable_images
+from utils.debugtools import get_all_domains
+from utils.debugtools import print_all_domains
+from utils.debugtools import count_downloadable_images
 from utils.politeness import get_politeness_factor
 from utils.consoleaccessories import Colors
 from collections import deque
