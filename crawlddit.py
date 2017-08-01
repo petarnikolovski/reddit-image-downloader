@@ -89,9 +89,8 @@ def confirm_redirect_dialog(driver):
     """
     If redirection dialog pops up, click confirm/continue button.
     """
-    # '//button[@type='submit' and @value='yes']'
     driver.find_element_by_xpath(
-        "//button[@type='submit'][@value='yes']"
+        "//button[@type='submit' and @value='yes']"
     ).click()
 
     try:
@@ -101,6 +100,7 @@ def confirm_redirect_dialog(driver):
             )
         )
     except TimeoutException as e:
+        driver.save_screenshot('screenshot.png')
         print('Loading taking too much time.\n', e)
 
 
