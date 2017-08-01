@@ -177,19 +177,28 @@ def get_image_link_from_allowed_domain(url, domain):
     Use correct domain parser.
     """
     if domain == 'reddit':
-        return
+        return None
     elif domain == 'imgur':
-        return
+        return None
     elif domain == 'gfycat':
-        return
+        return parse_gfycat(url)
     elif domain == 'tumblr':
-        return
+        return None
     elif domain == 'blogspot':
-        return
+        return None
     else:
         return None
     # ugly dangling else
     # raise DomainMissingException('Unknown domain, missing parsing tools.')
+
+
+def parse_gfycat(url):
+    """
+    Get direct link for post image/video from gfycat.
+    """
+    soup = make_soup(url)
+    source = soup.find('source', attrs={'id' : 'webmSource'})
+    return source['src']
 
 
 def known_domain(url):
