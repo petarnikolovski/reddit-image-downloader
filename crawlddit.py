@@ -83,8 +83,7 @@ def make_beautiful_soup(url, driver, parser='lxml'):
             "//button[@type='submit'][@value='yes']"
         )
 
-        if submit_exists:
-            confirm_redirect_dialog(driver)
+        confirm_redirect_dialog(driver)
 
     return BeautifulSoup(driver.page_source, parser)
 
