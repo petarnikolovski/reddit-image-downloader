@@ -144,6 +144,7 @@ def get_files_from_a_page(soup, url=None):
     things = soup.find_all('div', attrs={'class' : re.compile(r'\sthing\sid-t3.+')})
     images = deque({
             'url' : get_post_url(div),
+            'image_url' : None,
             'filename' : None,
             'domain' : get_post_domain(div),
             'post_title' : get_post_title(div),
