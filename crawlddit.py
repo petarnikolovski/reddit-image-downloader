@@ -27,6 +27,10 @@ FILE_FORMATS = ['.jpg', '.jpeg', '.png', '.gif', '.webm']
 DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
 
 
+class DomainMissingException(Exception):
+    pass
+
+
 def parse_arguments():
     """
     Parse input arguments of the program. Two positional arguments are
@@ -164,6 +168,26 @@ def get_image(div):
     if known_file_format(url):
         return image_dictionary(url, get_image_filename(url))
     return image_dictionary(None, None)
+
+
+def get_image_link_from_allowed_domain(url, domain):
+    """
+    Use correct domain parser.
+    """
+    DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
+    if domain == 'reddit':
+        return
+    elif domain == 'imgur':
+        return
+    elif domain == 'gfycat':
+        return
+    elif domain == 'tumblr':
+        return
+    elif domain == 'blogspot':
+        return
+    else:
+        pass
+    raise DomainMissingException('Unknown domain, missing parsing tools.')
 
 
 def known_domain(url):
