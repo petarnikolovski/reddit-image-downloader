@@ -296,6 +296,16 @@ def print_all_domains(domains):
         print(domain[0], domain[1])
 
 
+def count_downloadable_images(posts):
+    """
+    Count images from post that have direct download link available.
+    """
+    downloadable = 0
+    for post in posts:
+        if post['image']['image_url']: downloadable += 1
+    return downloadable
+
+
 if __name__ == '__main__':
     verbose, pages, url, destination = parse_arguments()
 
@@ -306,3 +316,6 @@ if __name__ == '__main__':
     #print(next_page)
     print(len(images))
     print_all_domains(get_all_domains(images))
+
+    print()
+    print(count_downloadable_images(images))
