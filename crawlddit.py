@@ -94,11 +94,14 @@ def confirm_redirect_dialog(driver):
         "//button[@type='submit'][@value='yes']"
     ).click()
 
-    WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located(
-            (By.XPATH, "//span[@class='next-button']")
+    try:
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "//span[@class='next-button']")
+            )
         )
-    )
+    except TimeoutException as e:
+        print('Loading taking too much time.\n', e)
 
 
 def get_all_posts(url, pages):
