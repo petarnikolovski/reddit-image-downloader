@@ -115,7 +115,7 @@ def get_all_posts(url, pages):
     """
     driver = webdriver.PhantomJS()
 
-    images = []
+    images = deque()
     crawl = True
     crawl_time = get_politeness_factor('reddit')
     page = 1 if pages else 0
