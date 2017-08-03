@@ -69,6 +69,18 @@ def download_files(files, destination, verbose):
     os.chdir(current_directory)
 
 
+def display_status(url, currently_at, total):
+    """
+    Display the link of the image which is downloading, and download
+    progress.
+    """
+    print(
+        'Progress: {}/{}.\tAttempting to download {}.'.format(
+            currently_at, total, url
+        )
+    )
+
+
 def make_connection(path):
     """
     Make connection to database.
