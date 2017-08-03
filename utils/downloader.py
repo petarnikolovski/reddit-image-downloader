@@ -12,6 +12,7 @@ from utils.consoleaccessories import is_valid_path
 from utils.consoleaccessories import clean_path
 from utils.debugtools import count_downloadable_images
 from utils.politeness import get_politeness_factor
+from time import sleep
 
 
 DB_TEMPLATE = """
@@ -44,7 +45,7 @@ def download_files(files, destination, verbose):
     # Since directory has changed, you do not have to use abs path for db
     # you could use './db.sqlite'
     # in that case, there is no need to clean path
-    db_path = ''.join([clean_path(path), '/db.sqlite'])
+    db_path = ''.join([clean_path(destination), '/db.sqlite'])
 
     # Check if db exists in destination directory
     if not is_valid_path(db_path):
@@ -66,6 +67,8 @@ def download_files(files, destination, verbose):
             if verbose: display_status(file_obj['image']['image_url'], currently_downloading, total)
             sldn = file_obj['second_level_domain_name']
             crawl_time = get_politeness_factor(sldn)
+
+            sleep(crawl_time)
 
     conn.close()
     os.chdir(current_directory)

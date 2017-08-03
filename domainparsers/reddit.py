@@ -20,7 +20,6 @@ from domainparsers.common import FILE_FORMATS
 from domainparsers.common import DOMAINS
 from utils.politeness import get_politeness_factor
 from collections import deque
-from time import sleep
 
 
 def make_beautiful_soup(url, driver, parser='lxml'):
