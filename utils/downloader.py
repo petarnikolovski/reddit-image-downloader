@@ -12,6 +12,24 @@ from utils.consoleaccessories import is_valid_path
 from utils.consoleaccessories import clean_path
 
 
+DB_TEMPLATE = """
+DROP TABLE IF EXISTS images;
+
+CREATE TABLE images (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  PostUrl TEXT,
+  ImageUrl TEXT,
+  Filename TEXT,
+  Domain TEXT,
+  PostTitle TEXT,
+  CommentSectionUrl TEXT,
+  PostedOn TEXT,
+  LastHtmlStatusCode INTEGER,
+  Downloaded INTEGER,
+  DownloadDate TEXT
+);
+"""
+
 def download_files(files, destination, verbose):
     """
     This function downloads files to a specified directory. Destination
@@ -21,11 +39,22 @@ def download_files(files, destination, verbose):
     current_directory = os.getcwd()
     os.chdir(destination)
 
-    # Check if db exists in destination directory
+    # Since directory has changed, you do not have to use abs path for db
+    # you could use './db.sqlite'
+    # in that case, there is no need to clean path
     db_path = ''.join([clean_path(path), '/db.sqlite'])
-    if not is_valid_path(db_path):
-        conn = make_connection(path)
 
+    # Check if db exists in destination directory
+    if not is_valid_path(db_path):
+        conn = make_connection(db_path)
+        c = conn.cursor()
+        c.executescript(DB_TEMPLATE)
+        conn.commit()
+
+    conn = make_connection(db_path)
+    c = conn.cursor()
+
+    conn.close()
     os.chdir(current_directory)
 
 
