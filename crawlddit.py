@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 
 
+import sys
 from argparse import ArgumentParser
 from utils.debugtools import get_all_domains
 from utils.debugtools import print_all_domains
 from utils.debugtools import count_downloadable_images
 from utils.downloader import download_files
+from utils.consoleaccessories import is_valid_domain
 from domainparsers.reddit import get_all_posts
 
 
@@ -37,6 +39,10 @@ def parse_arguments():
 
 if __name__ == '__main__':
     verbose, pages, url, destination = parse_arguments()
+
+    if not is_valid_domain(url):
+        print('Domain must be reddit.com')
+        sys.exit(0)
 
     if verbose: print('Fetching available links...')
     if not pages: pages = 0
