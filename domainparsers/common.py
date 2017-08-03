@@ -12,3 +12,9 @@ class Domain(object):
 
 So later in the program they can be used as Domain.REDDIT.
 """
+
+FILE_FORMATS = ['.jpg', '.jpeg', '.png', '.gif', '.webm']
+DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
+
+class DomainMissingException(Exception):
+    pass

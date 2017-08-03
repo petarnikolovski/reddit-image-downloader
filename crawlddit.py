@@ -13,6 +13,8 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from domainparsers.gfycat import parse_gfycat
+from domainparsers.common import FILE_FORMATS
+from domainparsers.common import DOMAINS
 from utils.debugtools import get_all_domains
 from utils.debugtools import print_all_domains
 from utils.debugtools import count_downloadable_images
@@ -20,14 +22,6 @@ from utils.politeness import get_politeness_factor
 from utils.consoleaccessories import Colors
 from collections import deque
 from time import sleep
-
-
-FILE_FORMATS = ['.jpg', '.jpeg', '.png', '.gif', '.webm']
-DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
-
-
-class DomainMissingException(Exception):
-    pass
 
 
 def parse_arguments():
