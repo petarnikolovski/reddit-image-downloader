@@ -8,6 +8,7 @@ from utils.debugtools import print_all_domains
 from utils.debugtools import count_downloadable_images
 from utils.downloader import download_files
 from utils.consoleaccessories import is_valid_domain
+from utils.consoleaccessories import is_valid_path
 from domainparsers.reddit import get_all_posts
 
 
@@ -42,6 +43,10 @@ if __name__ == '__main__':
 
     if not is_valid_domain(url):
         print('Domain must be reddit.com')
+        sys.exit(0)
+
+    if not is_valid_path(destination):
+        print('Destination directory does not exist.')
         sys.exit(0)
 
     if verbose: print('Fetching available links...')

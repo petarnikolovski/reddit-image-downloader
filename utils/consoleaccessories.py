@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
 
+import os
+
+
 class Colors(object):
     BLUE = '\033[94m'
     GREEN = '\033[92m'
@@ -12,9 +15,11 @@ def is_valid_domain(url):
     """
     Checks if the domain is valid for the application.
     """
-    if 'www.reddit.com' in url:
-        return True
-    return False
+    return 'www.reddit.com' in url:
+
+
+def is_valid_path(path):
+    return os.path.exists(path)
 
 
 if __name__ == '__main__':
