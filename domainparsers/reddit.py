@@ -98,6 +98,7 @@ def get_files_from_a_page(soup, url=None):
             'url' : get_post_url(div),
             'image' : get_image(div),
             'domain' : get_post_domain(div),
+            'second_level_domain_name' : known_domain(url),
             'post_title' : get_post_title(div),
             'posted_on' : get_post_timestamp(div),
             'link_to_comments' : get_link_to_comments(div),
