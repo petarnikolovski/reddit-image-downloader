@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 from utils.debugtools import get_all_domains
 from utils.debugtools import print_all_domains
 from utils.debugtools import count_downloadable_images
+from utils.downloader import download_files
 from domainparsers.reddit import get_all_posts
 
 
@@ -46,6 +47,7 @@ if __name__ == '__main__':
             count_downloadable_images(images) , len(images)
         )
     )
+    download_files(images, destination, verbose)
     #print(images)
     #print_all_domains(get_all_domains(images))
 
