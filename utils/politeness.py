@@ -16,6 +16,7 @@ def get_politeness_factor(domain):
     http://archive.is/AlBg0
     https://web.archive.org/web/20170730001425/https://stackoverflow.com/questions/8236046/typical-politeness-factor-for-a-web-crawler
     """
+    if not domain: domain = 'other'
     DOMAIN_AUTHORITY = {
         'reddit' : 99,
         'imgur' : 93,
