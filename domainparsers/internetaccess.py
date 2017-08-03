@@ -8,6 +8,7 @@ Contains tools to access web pages and make soup objects out of them.
 
 from urllib.request import urlopen
 from selenium import webdriver
+from bs4 import BeautifulSoup
 
 
 def make_soup(url, parser='lxml', selenium=False):
