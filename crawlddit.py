@@ -5,7 +5,6 @@ import os
 import re
 from argparse import ArgumentParser
 from contextlib import suppress
-from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
