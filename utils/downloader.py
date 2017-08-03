@@ -7,6 +7,9 @@ Downloads files.
 
 
 import os
+import sqlite3
+from utils.consoleaccessories import is_valid_path
+from utils.consoleaccessories import clean_path
 
 
 def download_files(files, destination, verbose):
@@ -18,8 +21,13 @@ def download_files(files, destination, verbose):
     current_directory = os.getcwd()
     os.chdir(destination)
 
+    # Check if db exists in destination directory
+    db_path = ''.join([clean_path(path), '/db.sqlite'])
+    if not is_valid_path(db_path):
+        conn = make_connection(path)
+
     os.chdir(current_directory)
 
 
-if __name__ == '__main__':
-    print(__doc__)
+def make_connection(path):
+    return sqlite3.connect(path)
