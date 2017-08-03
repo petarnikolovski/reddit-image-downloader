@@ -37,13 +37,17 @@ def parse_arguments():
 if __name__ == '__main__':
     verbose, pages, url, destination = parse_arguments()
 
+    if verbose: print('Fetching available links...')
     if not pages: pages = 0
     images = get_all_posts(url, pages)
 
-    print(images)
-    #print(next_page)
-    print(len(images))
-    print_all_domains(get_all_domains(images))
+    if verbose: print(
+        '{}/{} images available for download.'.format(
+            count_downloadable_images(images) , len(images)
+        )
+    )
+    #print(images)
+    #print_all_domains(get_all_domains(images))
 
-    print()
-    print(count_downloadable_images(images))
+    #print()
+    #print(count_downloadable_images(images))
