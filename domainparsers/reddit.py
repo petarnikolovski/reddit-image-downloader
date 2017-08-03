@@ -227,7 +227,3 @@ def get_post_title(div):
     Get title of a post.
     """
     return get_p_title_tag(div).a.string
-
-
-if __name__ == '__main__':
-    print(__doc__)
