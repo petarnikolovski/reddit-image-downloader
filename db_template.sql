@@ -1,7 +1,7 @@
-DROP IF EXISTS images;
+DROP TABLE IF EXISTS images;
 
 CREATE TABLE images (
-  id INT PRIMARY KEY AUTOINCREMENT,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   PostUrl TEXT,
   ImageUrl TEXT,
   Filename TEXT,
@@ -9,7 +9,7 @@ CREATE TABLE images (
   PostTitle TEXT,
   CommentSectionUrl TEXT,
   PostedOn TEXT,
-  LastHtmlStatusCode INT,
-  Downloaded INT,
+  LastHtmlStatusCode INTEGER,
+  Downloaded INTEGER,
   DownloadDate TEXT
 );
