@@ -8,6 +8,7 @@ Downloads files.
 
 import os
 import sqlite3
+from contextlib import suppress
 from utils.consoleaccessories import is_valid_path
 from utils.consoleaccessories import clean_path
 from utils.debugtools import count_downloadable_images
@@ -68,7 +69,11 @@ def download_files(files, destination, verbose):
             sldn = file_obj['second_level_domain_name']
             crawl_time = get_politeness_factor(sldn)
 
-            sleep(crawl_time)
+            currently_downloading += 1
+
+            with suppress(IndexError):
+                if file_obj['domain'] == files[1]['domain']:
+                    sleep(crawl_time)
 
     conn.close()
     os.chdir(current_directory)
@@ -80,7 +85,7 @@ def display_status(url, currently_at, total):
     progress.
     """
     print(
-        'Progress: {}/{}.\tDownloading: {}.'.format(
+        'Progress: {}/{}.\tDownloading: {}'.format(
             currently_at, total, url
         )
     )
