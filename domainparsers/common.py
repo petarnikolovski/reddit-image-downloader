@@ -10,7 +10,7 @@ class Domain(object):
     GFYCAT = 'gfycat'
     ...
 
-So later in the program they can be used as Domain.REDDIT.
+So later in the program they could be used as Domain.REDDIT.
 """
 
 
@@ -20,3 +20,7 @@ DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
 
 class DomainMissingException(Exception):
     pass
+
+
+if __name__ == '__main__':
+    print(__doc__)
