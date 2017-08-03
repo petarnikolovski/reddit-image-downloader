@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 
-import os
 import re
 from argparse import ArgumentParser
 from contextlib import suppress
