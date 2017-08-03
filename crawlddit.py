@@ -5,7 +5,6 @@ import os
 import re
 from argparse import ArgumentParser
 from contextlib import suppress
-from urllib.request import urlopen
 from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -14,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
+from domainparsers.gfycat import parse_gfycat
 from utils.debugtools import get_all_domains
 from utils.debugtools import print_all_domains
 from utils.debugtools import count_downloadable_images
@@ -55,20 +55,6 @@ def parse_arguments():
     args = parser.parse_args()
 
     return (args.verbose, args.p, args.URL, args.directory)
-
-
-def make_soup(url, parser='lxml', selenium=False):
-    """
-    Return a soup object. Default parser is lxml. Requests are made by
-    default using url.request library.
-    """
-    if selenium:
-        driver = webdriver.PhantomJS()
-        driver.get(url)
-        html = driver.page_source
-        driver.close()
-        return BeautifulSoup(html, parser)
-    return BeautifulSoup(urlopen(url).read(), parser)
 
 
 def make_beautiful_soup(url, driver, parser='lxml'):
@@ -190,15 +176,6 @@ def get_image_link_from_allowed_domain(url, domain):
         return None
     # ugly dangling else
     # raise DomainMissingException('Unknown domain, missing parsing tools.')
-
-
-def parse_gfycat(url):
-    """
-    Get direct link for post image/video from gfycat.
-    """
-    soup = make_soup(url)
-    source = soup.find('source', attrs={'id' : 'webmSource'})
-    return source['src'] if source else None
 
 
 def known_domain(url):
