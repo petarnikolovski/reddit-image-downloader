@@ -64,6 +64,8 @@ def download_files(files, destination, verbose):
 
         if file_obj['image']['image_url']:
             if verbose: display_status(file_obj['image']['image_url'], currently_downloading, total)
+            sldn = file_obj['second_level_domain_name']
+            crawl_time = get_politeness_factor(sldn)
 
     conn.close()
     os.chdir(current_directory)
@@ -75,7 +77,7 @@ def display_status(url, currently_at, total):
     progress.
     """
     print(
-        'Progress: {}/{}.\tAttempting to download {}.'.format(
+        'Progress: {}/{}.\tDownloading: {}.'.format(
             currently_at, total, url
         )
     )
