@@ -23,3 +23,7 @@ def make_soup(url, parser='lxml', selenium=False):
         driver.close()
         return BeautifulSoup(html, parser)
     return BeautifulSoup(urlopen(url).read(), parser)
+
+
+if __name__ == '__main__':
+    print(__doc__)

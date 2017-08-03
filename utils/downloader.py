@@ -13,3 +13,7 @@ def download_files(files, destination, verbose):
     True, then the download status is displayed.
     """
     pass
+
+
+if __name__ == '__main__':
+    print(__doc__)

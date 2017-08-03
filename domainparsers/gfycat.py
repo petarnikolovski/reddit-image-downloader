@@ -17,3 +17,7 @@ def parse_gfycat(url):
     soup = make_soup(url)
     source = soup.find('source', attrs={'id' : 'webmSource'})
     return source['src'] if source else None
+
+
+if __name__ == '__main__':
+    print(__doc__)

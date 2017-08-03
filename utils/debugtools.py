@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 
 
-from itertools import groupby
-
-
 """
 Debugging, and analysis tools.
 """
+
+
+from itertools import groupby
 
 
 def get_all_domains(posts):
@@ -42,3 +42,7 @@ def count_downloadable_images(posts):
     for post in posts:
         if post['image']['image_url']: downloadable += 1
     return downloadable
+
+
+if __name__ == '__main__':
+    print(__doc__)
