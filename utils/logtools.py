@@ -15,7 +15,7 @@ def write_log(post):
     """
     with open('download.log', 'a') as f:
         f.write(''.join(['-'*15, ' ', str(datetime.now()), ' ', '-'*15, '\n']))
-        f.write(''.join(['Post URL', post['url'], '\n']))
-        f.write(''.join(['Post Comments', post['link_to_comments'], '\n']))
-        f.write(''.join(['Last HTTP status', str(post['last_html_status']), '\n']))
-        f.writr('\n')
+        f.write(''.join(['Post URL -> ', post['url'], '\n']))
+        f.write(''.join(['Post Comments -> ', post['link_to_comments'], '\n']))
+        f.write(''.join(['Last HTTP status -> ', str(post['last_html_status']), '\n']))
+        f.write('\n')
