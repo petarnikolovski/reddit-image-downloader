@@ -17,6 +17,7 @@ from utils.consoleaccessories import is_valid_path
 from utils.consoleaccessories import clean_path
 from utils.debugtools import count_downloadable_images
 from utils.politeness import get_politeness_factor
+from datetime import datetime
 from time import sleep
 
 
@@ -93,12 +94,27 @@ def download_files(files, destination, verbose):
                 else:
                     print('Downloading will be retried later.')
                     # log this
+                    file_obj['html_status_token'] += 1
                     files.append(file_obj)
             except URLError as e:
-                print('Something went wrong with connection.')
-                print('Connection may have been refused.')
+                print('Something went wrong.')
+                print(e.reason)
+                currently_downloading += 1
             else:
-                pass
+                # Writting file succeded
+                image = (
+                    file_obj['url'],
+                    file_obj['image']['image_url'],
+                    file_obj['image']['filename'],
+                    file_obj['domain'],
+                    file_obj['post_title'],
+                    file_obj['link_to_comments'],
+                    file_obj['posted_on'],
+                    200,
+                    1, # True
+                    str(datetime.now()),
+                )
+                c.execute("INSERT INTO images VALUES(?,?,?,?,?,?,?,?,?,?)", image)
                 currently_downloading += 1
 
             # If two consecutive domains are different, there is no need to
