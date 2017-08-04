@@ -82,7 +82,7 @@ def download_files(files, destination, verbose):
                 write_file_to_filesystem(image_url, filename)
             except HTTPError as e:
                 status = e.code
-                print('Could not downloade, error status:', status)
+                print('Could not download, error status:', status)
 
                 if status == '404':
                     if verbose: print('File not found.')
