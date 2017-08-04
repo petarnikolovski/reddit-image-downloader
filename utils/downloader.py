@@ -127,6 +127,7 @@ def download_files(files, destination, verbose):
                 if file_obj['domain'] == files[1]['domain']:
                     sleep(crawl_time)
 
+    conn.commit()
     conn.close()
     os.chdir(current_directory)
 
