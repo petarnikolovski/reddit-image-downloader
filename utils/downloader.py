@@ -78,7 +78,7 @@ def download_files(files, destination, verbose):
             sldn = file_obj['second_level_domain_name']
             crawl_time = get_politeness_factor(sldn)
 
-            # skip downloading if file is already downloaded
+            # implement skip downloading if file is already downloaded
             try:
                 write_file_to_filesystem(image_url, filename)
             except HTTPError as e:
