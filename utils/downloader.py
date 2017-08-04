@@ -16,6 +16,7 @@ from shutil import copyfileobj
 from utils.consoleaccessories import is_valid_path
 from utils.consoleaccessories import clean_path
 from utils.debugtools import count_downloadable_images
+from utils.logtools import write_log
 from utils.politeness import get_politeness_factor
 from datetime import datetime
 from time import sleep
@@ -89,12 +90,14 @@ def download_files(files, destination, verbose):
                     # log missing, and write to db
                     file_obj['last_html_status'] = status
                     write_a_record_to_db(c, file_obj, status, 0)
+                    write_log(file_obj)
                     currently_downloading += 1
                 elif status == '429':
                     if verbose: print('Too many requests were made to the server')
                     # does not return file at the end of the deque
                     file_obj['last_html_status'] = status
                     write_a_record_to_db(c, file_obj, status, 0)
+                    write_log(file_obj)
                     currently_downloading += 1
                 else:
                     if verbose and token < 2: print('Downloading will be retried later.')
@@ -106,11 +109,13 @@ def download_files(files, destination, verbose):
                         files.append(file_obj)
                     else:
                         write_a_record_to_db(c, file_obj, status, 0)
+                        write_log(file_obj)
             except URLError as e:
                 if verbose: print('Something went wrong.')
                 if verbose: print(e.reason)
                 # log this
                 write_a_record_to_db(c, file_obj, file_obj['last_html_status'], 0)
+                write_log(file_obj)
                 currently_downloading += 1
             else:
                 # Writting file succeded
