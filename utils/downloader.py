@@ -26,7 +26,6 @@ DB_TEMPLATE = """
 DROP TABLE IF EXISTS images;
 
 CREATE TABLE images (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
   PostUrl TEXT,
   ImageUrl TEXT,
   Filename TEXT,
