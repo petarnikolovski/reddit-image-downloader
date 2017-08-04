@@ -71,7 +71,8 @@ def download_files(files, destination, verbose):
 
         image_url = file_obj['image']['image_url']
         filename = file_obj['image']['filename']
-        if image_url:
+        token = file_obj['html_status_token']
+        if image_url and token < 3:
             if verbose: display_status(file_obj['image']['image_url'], currently_downloading, total)
             sldn = file_obj['second_level_domain_name']
             crawl_time = get_politeness_factor(sldn)
@@ -94,11 +95,12 @@ def download_files(files, destination, verbose):
                     file_obj['last_html_status'] = status
                     currently_downloading += 1
                 else:
-                    print('Downloading will be retried later.')
+                    if token < 2: print('Downloading will be retried later.')
+                    if token == 2: print('Could not download.')
                     # log this
                     file_obj['last_html_status'] = status
                     file_obj['html_status_token'] += 1
-                    files.append(file_obj)
+                    if token < 3: files.append(file_obj)
             except URLError as e:
                 print('Something went wrong.')
                 print(e.reason)
