@@ -108,19 +108,7 @@ def download_files(files, destination, verbose):
                 currently_downloading += 1
             else:
                 # Writting file succeded
-                image = (
-                    file_obj['url'],
-                    file_obj['image']['image_url'],
-                    file_obj['image']['filename'],
-                    file_obj['domain'],
-                    file_obj['post_title'],
-                    file_obj['link_to_comments'],
-                    file_obj['posted_on'],
-                    200,
-                    1, # True
-                    str(datetime.now()),
-                )
-                c.execute("INSERT INTO images VALUES(?,?,?,?,?,?,?,?,?,?)", image)
+                write_a_record_to_db(c, file_obj, 200, 1)
                 currently_downloading += 1
 
             # If two consecutive domains are different, there is no need to
@@ -131,6 +119,25 @@ def download_files(files, destination, verbose):
 
     conn.close()
     os.chdir(current_directory)
+
+
+def write_a_record_to_db(cursor, file_obj, status, downloaded):
+    """
+    Insert metadata into database.
+    """
+    image = (
+        file_obj['url'],
+        file_obj['image']['image_url'],
+        file_obj['image']['filename'],
+        file_obj['domain'],
+        file_obj['post_title'],
+        file_obj['link_to_comments'],
+        file_obj['posted_on'],
+        status,
+        downloaded,
+        str(datetime.now()),
+    )
+    cursor.execute("INSERT INTO images VALUES(?,?,?,?,?,?,?,?,?,?)", image)
 
 
 def write_file_to_filesystem(url, filename):
