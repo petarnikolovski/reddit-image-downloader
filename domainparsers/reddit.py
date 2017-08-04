@@ -103,6 +103,7 @@ def get_files_from_a_page(soup, url=None):
             'posted_on' : get_post_timestamp(div),
             'link_to_comments' : get_link_to_comments(div),
             'on_page' : url,
+            'last_html_status' : None,
             'html_status_token' : 0,
         } for div in things
     )
