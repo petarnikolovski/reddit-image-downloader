@@ -87,11 +87,13 @@ def download_files(files, destination, verbose):
                 if status == '404':
                     if verbose: print('File not found.')
                     # log missing, and write to db
+                    file_obj['last_html_status'] = status
                     write_a_record_to_db(c, file_obj, status, 0)
                     currently_downloading += 1
                 elif status == '429':
                     if verbose: print('Too many requests were made to the server')
                     # does not return file at the end of the deque
+                    file_obj['last_html_status'] = status
                     write_a_record_to_db(c, file_obj, status, 0)
                     currently_downloading += 1
                 else:
