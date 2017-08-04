@@ -85,26 +85,30 @@ def download_files(files, destination, verbose):
                 print('Could not downloade, error status:', status)
 
                 if status == '404':
-                    print('File not found.')
+                    if verbose: print('File not found.')
                     # log missing, and write to db
-                    file_obj['last_html_status'] = status
+                    write_a_record_to_db(c, file_obj, status, 0)
                     currently_downloading += 1
                 elif status == '429':
-                    print('Too many requests were made to the server')
+                    if verbose: print('Too many requests were made to the server')
                     # does not return file at the end of the deque
-                    file_obj['last_html_status'] = status
+                    write_a_record_to_db(c, file_obj, status, 0)
                     currently_downloading += 1
                 else:
-                    if token < 2: print('Downloading will be retried later.')
-                    if token == 2: print('Could not download.')
+                    if verbose and token < 2: print('Downloading will be retried later.')
+                    if verbose and token == 2: print('Could not download.')
                     # log this
                     file_obj['last_html_status'] = status
                     file_obj['html_status_token'] += 1
-                    if token < 3: files.append(file_obj)
+                    if token < 3:
+                        files.append(file_obj)
+                    else:
+                        write_a_record_to_db(c, file_obj, status, 0)
             except URLError as e:
-                print('Something went wrong.')
-                print(e.reason)
+                if verbose: print('Something went wrong.')
+                if verbose: print(e.reason)
                 # log this
+                write_a_record_to_db(c, file_obj, file_obj['last_html_status'], 0)
                 currently_downloading += 1
             else:
                 # Writting file succeded
