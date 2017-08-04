@@ -86,19 +86,23 @@ def download_files(files, destination, verbose):
                 if status == '404':
                     print('File not found.')
                     # log missing, and write to db
+                    file_obj['last_html_status'] = status
                     currently_downloading += 1
                 elif status == '429':
                     print('Too many requests were made to the server')
                     # does not return file at the end of the deque
+                    file_obj['last_html_status'] = status
                     currently_downloading += 1
                 else:
                     print('Downloading will be retried later.')
                     # log this
+                    file_obj['last_html_status'] = status
                     file_obj['html_status_token'] += 1
                     files.append(file_obj)
             except URLError as e:
                 print('Something went wrong.')
                 print(e.reason)
+                # log this
                 currently_downloading += 1
             else:
                 # Writting file succeded
