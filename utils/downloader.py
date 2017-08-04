@@ -126,6 +126,8 @@ def download_files(files, destination, verbose):
             with suppress(IndexError):
                 if file_obj['domain'] == files[1]['domain']:
                     sleep(crawl_time)
+        else:
+            write_log(file_obj)
 
     conn.commit()
     conn.close()
