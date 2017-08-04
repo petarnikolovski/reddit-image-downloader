@@ -7,3 +7,9 @@ The app is a command line tool for now, and it lacks object oriented design.
 This scraper is meant to be modular, in a sense that additional parsers can be implemented to scrape content from sites where direct link to image is not available. Some big changes must be made though. This is due to the fact that some imgur links may lead to galleries.
 
 Built using Python 3.5.
+
+## TODO
+
+* Create GUI on top of the app (tkinter)
+* Refactor code -> make it more object oriented
+* Write additional site parsers (e.g. imgur)
