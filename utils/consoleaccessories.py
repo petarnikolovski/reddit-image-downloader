@@ -30,7 +30,3 @@ def clean_path(path):
     Check if the path ends with a slash. If it ends, remove it.
     """
     return path[:-1] if path.endswith('/') else path
-
-
-if __name__ == '__main__':
-    print(__doc__)

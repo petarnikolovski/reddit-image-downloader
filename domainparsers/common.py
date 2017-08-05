@@ -20,7 +20,3 @@ DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
 
 class DomainMissingException(Exception):
     pass
-
-
-if __name__ == '__main__':
-    print(__doc__)
