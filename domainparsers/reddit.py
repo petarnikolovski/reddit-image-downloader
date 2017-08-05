@@ -142,7 +142,6 @@ def get_image_link_from_allowed_domain(url, domain):
         return None
     else:
         return None
-    # ugly dangling 'else'
     # raise DomainMissingException('Unknown domain, missing parsing tools.')
 
 
@@ -188,7 +187,6 @@ def get_link_to_comments(div):
     Get a link to a comment section.
     """
     li = div.find('li', attrs={'class' : 'first'})
-    #return ''.join(['https://www.reddit.com', li.a['href']])
     return li.a['href']
 
 
