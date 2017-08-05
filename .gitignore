@@ -2,7 +2,7 @@
 *.*~
 
 # Ignore Python related files
-*.pyc
+*.py[cod]
 __pycache__/
 .cache/
 
