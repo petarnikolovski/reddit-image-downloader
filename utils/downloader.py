@@ -50,7 +50,7 @@ def download_files(files, destination, verbose):
 
     # Since directory has changed, you do not have to use abs path for db
     # you could use './db.sqlite'
-    # in that case, there is no need to clean path
+    # in that case, there is no need to 'clean path'
     db_path = ''.join([clean_path(destination), '/db.sqlite'])
 
     # Check if db exists in destination directory
@@ -72,12 +72,13 @@ def download_files(files, destination, verbose):
         image_url = file_obj['image']['image_url']
         filename = file_obj['image']['filename']
         token = file_obj['html_status_token']
+
+        # to implement: check db if file was downloaded already
         if image_url and token < 3:
             if verbose: display_status(file_obj['image']['image_url'], currently_downloading, total)
             sldn = file_obj['second_level_domain_name']
             crawl_time = get_politeness_factor(sldn)
 
-            # implement skip downloading if file is already downloaded
             try:
                 write_file_to_filesystem(image_url, filename)
             except HTTPError as e:
@@ -86,24 +87,24 @@ def download_files(files, destination, verbose):
 
                 if status == '404':
                     if verbose: print('File not found.')
-                    # log missing, and write to db
                     file_obj['last_html_status'] = status
+
                     write_a_record_to_db(c, file_obj, status, 0)
                     write_log(file_obj)
                     currently_downloading += 1
                 elif status == '429':
                     if verbose: print('Too many requests were made to the server')
-                    # does not return file at the end of the deque
                     file_obj['last_html_status'] = status
+
                     write_a_record_to_db(c, file_obj, status, 0)
                     write_log(file_obj)
                     currently_downloading += 1
                 else:
                     if verbose and token < 2: print('Downloading will be retried later.')
                     if verbose and token == 2: print('Could not download.')
-                    # log this
                     file_obj['last_html_status'] = status
                     file_obj['html_status_token'] += 1
+
                     if token < 3:
                         files.append(file_obj)
                     else:
@@ -112,12 +113,12 @@ def download_files(files, destination, verbose):
             except URLError as e:
                 if verbose: print('Something went wrong.')
                 if verbose: print(e.reason)
-                # log this
+
                 write_a_record_to_db(c, file_obj, file_obj['last_html_status'], 0)
                 write_log(file_obj)
                 currently_downloading += 1
             else:
-                # Writting file succeded
+                # This is else from try/except - a bit unreadable
                 write_a_record_to_db(c, file_obj, 200, 1)
                 currently_downloading += 1
 
@@ -127,6 +128,7 @@ def download_files(files, destination, verbose):
                 if file_obj['domain'] == files[1]['domain']:
                     sleep(crawl_time)
         else:
+            # write_a_record_to_db(c, file_obj, file_obj['last_html_status'], 0)
             write_log(file_obj)
 
     conn.commit()
