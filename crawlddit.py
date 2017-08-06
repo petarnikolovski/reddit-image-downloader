@@ -3,8 +3,6 @@
 
 import sys
 from argparse import ArgumentParser
-from utils.debugtools import get_all_domains
-from utils.debugtools import print_all_domains
 from utils.debugtools import count_downloadable_images
 from utils.downloader import download_files
 from utils.consoleaccessories import is_valid_domain
