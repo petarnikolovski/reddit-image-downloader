@@ -59,8 +59,3 @@ if __name__ == '__main__':
         )
     )
     download_files(images, destination, verbose)
-    #print(images)
-    #print_all_domains(get_all_domains(images))
-
-    #print()
-    #print(count_downloadable_images(images))
