@@ -13,3 +13,4 @@ Built using Python 3.5.
 * Create GUI on top of the app (tkinter)
 * Refactor code -> make it more object oriented
 * Write additional site parsers (e.g. imgur)
+* Add tests (py.test or unittest)
