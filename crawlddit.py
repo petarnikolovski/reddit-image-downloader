@@ -16,7 +16,7 @@ def parse_arguments():
     mandatory: 'URL' and destination 'directory'. 'verbose' is optional.
     Example:
 
-    crawlddit.py -v https://www.reddit.com/r/MemeEconomy/ ./dank_memes
+    crawlddit.py -v https://www.reddit.com/r/MemeEconomy/ ./memes
 
     For more information type:
 
