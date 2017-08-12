@@ -16,7 +16,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from domainparsers.gfycat import parse_gfycat
-from domainparsers.common import FILE_FORMATS
+from domainparsers.common import FileFormats
 from domainparsers.common import DOMAINS
 from utils.politeness import get_politeness_factor
 from collections import deque
@@ -176,7 +176,7 @@ def known_file_format(url):
     """
     Check if the url contains known file format extension.
     """
-    for extension in FILE_FORMATS:
+    for extension in FileFormats.formats():
         if extension in url:
             return extension
     return None
