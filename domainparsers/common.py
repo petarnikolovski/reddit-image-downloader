@@ -15,12 +15,16 @@ class FileFormats(object):
 
     @classmethod
     def formats(cls):
-        formats = []
+        """
+        Return a set consisting of all class attributes. Class attributes
+        must not be callable.
+        """
+        formats = set()
         for attribute in FileFormats.__dict__.keys():
             if attribute[:2] != '__':
                 value = getattr(FileFormats, attribute)
                 if not callable(value):
-                    formats.append(value)
+                    formats.add(value)
         return formats
 
 
@@ -33,12 +37,16 @@ class Domains(object):
 
     @classmethod
     def domains(cls):
-        domain_list = []
+        """
+        Return a set consisting of all class attributes. Class attributes
+        must not be callable.
+        """
+        domain_list = set()
         for attribute in Domains.__dict__.keys():
             if attribute[:2] != '__':
                 value = getattr(Domains, attribute)
                 if not callable(value):
-                    domain_list.append(value)
+                    domain_list.add(value)
         return domain_list
 
 
