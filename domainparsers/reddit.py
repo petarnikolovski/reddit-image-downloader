@@ -17,7 +17,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from domainparsers.gfycat import parse_gfycat
 from domainparsers.common import FileFormats
-from domainparsers.common import DOMAINS
+from domainparsers.common import Domains
 from utils.politeness import get_politeness_factor
 from collections import deque
 from time import sleep
@@ -149,7 +149,7 @@ def known_domain(url):
     """
     Check if the domain is in the list of known/allowed domains.
     """
-    for domain in DOMAINS:
+    for domain in Domains.domains():
         if domain in url:
             return domain
     return None

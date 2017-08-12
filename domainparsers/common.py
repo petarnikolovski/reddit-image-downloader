@@ -37,7 +37,22 @@ class FileFormats(object):
         return formats
 
 
-DOMAINS = ['reddit', 'imgur', 'gfycat', 'tumblr', 'blogspot']
+class Domains(object):
+    REDDIT = 'reddit'
+    IMGUR = 'imgur'
+    GFYCAT = 'gfycat'
+    TUMBLR = 'tumblr'
+    BLOGSPOT = 'blogspot'
+
+    @classmethod
+    def domains(cls):
+        domain_list = []
+        for attribute in Domains.__dict__.keys():
+            if attribute[:2] != '__':
+                value = getattr(Domains, attribute)
+                if not callable(value):
+                    domain_list.append(value)
+        return domain_list
 
 
 class DomainMissingException(Exception):
