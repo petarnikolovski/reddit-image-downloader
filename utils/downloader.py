@@ -14,7 +14,6 @@ from urllib.error import HTTPError
 from urllib.error import URLError
 from shutil import copyfileobj
 from utils.consoleaccessories import is_valid_path
-from utils.consoleaccessories import clean_path
 from utils.debugtools import count_downloadable_images
 from utils.logtools import write_log
 from utils.politeness import get_politeness_factor
@@ -48,10 +47,7 @@ def download_files(files, destination, verbose):
     current_directory = os.getcwd()
     os.chdir(destination)
 
-    # Since directory has changed, you do not have to use abs path for db
-    # you could use './db.sqlite'
-    # in that case, there is no need to 'clean path'
-    db_path = ''.join([clean_path(destination), '/db.sqlite'])
+    db_path = './db.sqlite'
 
     # Check if db exists in destination directory
     if not is_valid_path(db_path):

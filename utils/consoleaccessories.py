@@ -23,10 +23,3 @@ def is_valid_path(path):
     Checks if the directory/file exists on a given path.
     """
     return os.path.exists(path)
-
-
-def clean_path(path):
-    """
-    Check if the path ends with a slash. If it ends, remove it.
-    """
-    return path[:-1] if path.endswith('/') else path
