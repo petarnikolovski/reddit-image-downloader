@@ -130,15 +130,15 @@ def get_image_link_from_allowed_domain(url, domain):
     """
     Use correct domain parser.
     """
-    if domain == 'reddit':
+    if domain == Domains.REDDIT:
         return None
-    elif domain == 'imgur':
+    elif domain == Domains.IMGUR:
         return None
-    elif domain == 'gfycat':
+    elif domain == Domains.GFYCAT:
         return parse_gfycat(url)
-    elif domain == 'tumblr':
+    elif domain == Domains.TUMBLR:
         return None
-    elif domain == 'blogspot':
+    elif domain == Domains.BLOGSPOT:
         return None
     else:
         return None
