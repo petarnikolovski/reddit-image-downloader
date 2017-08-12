@@ -169,7 +169,7 @@ def display_status(url, currently_at, total):
     progress.
     """
     print(
-        'Progress: {}/{}.\tDownloading: {}'.format(
+        'Progress: {}/{}. Downloading: {}'.format(
             currently_at, total, url
         )
     )
