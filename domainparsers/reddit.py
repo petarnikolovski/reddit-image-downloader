@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
-from domainparsers.gfycat import parse_gfycat
+from domainparsers.gfycat import Gfycat
 from domainparsers.common import FileFormats
 from domainparsers.common import Domains
 from utils.politeness import get_politeness_factor
@@ -135,7 +135,7 @@ def get_image_link_from_allowed_domain(url, domain):
     elif domain == Domains.IMGUR:
         return None
     elif domain == Domains.GFYCAT:
-        return parse_gfycat(url)
+        return Gfycat(url).parse_gfycat()
     elif domain == Domains.TUMBLR:
         return None
     elif domain == Domains.BLOGSPOT:
