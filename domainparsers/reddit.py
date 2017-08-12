@@ -43,23 +43,23 @@ class Reddit(object):
             return url
         raise RedditException('Invalid link.')
 
-    def make_beautiful_soup(url, driver, parser='lxml'):
+    def make_beautiful_soup(self, driver, parser='lxml'):
         """
         Get soup object from url using selenium driver. If request is
         redirected, then confirm redirect dialog.
         """
-        driver.get(url)
+        driver.get(self.url)
 
         with suppress(NoSuchElementException):
             submit_exists = driver.find_element_by_xpath(
                 "//button[@type='submit'][@value='yes']"
             )
 
-            confirm_redirect_dialog(driver)
+            self.confirm_redirect_dialog(driver)
 
         return BeautifulSoup(driver.page_source, parser)
 
-    def confirm_redirect_dialog(driver):
+    def confirm_redirect_dialog(self, driver):
         """
         If redirection dialog pops up, click confirm/continue button.
         """
