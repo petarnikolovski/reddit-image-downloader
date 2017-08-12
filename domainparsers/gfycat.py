@@ -24,7 +24,6 @@ class Gfycat(object):
         """
         return BeautifulSoup(urlopen(self.url).read(), parser)
 
-
     def parse_gfycat(self):
         """
         Get direct link for post image/video from gfycat.
