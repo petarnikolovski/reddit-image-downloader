@@ -25,7 +25,7 @@ def get_politeness_factor(domain):
         Domains.IMGUR : 93,
         Domains.GFYCAT : 70,
         Domains.TUMBLR : 100, # tumblr allows crawl time of 1s https://www.tumblr.com/robots.txt
-        Domains.BLOGSPOT : None,
+        Domains.BLOGSPOT : 97,
         'other' : 0,
     }
     domain_size = DOMAIN_AUTHORITY[domain] // 10
