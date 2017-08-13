@@ -40,5 +40,5 @@ def count_downloadable_images(posts):
     """
     downloadable = 0
     for post in posts:
-        if post['image']['image_url']: downloadable += 1
+        if post['image']['url']: downloadable += 1
     return downloadable
