@@ -39,10 +39,6 @@ def parse_arguments():
 if __name__ == '__main__':
     verbose, pages, url, destination = parse_arguments()
 
-    if not is_valid_domain(url):
-        print('Domain must be reddit.com')
-        sys.exit(0)
-
     if not is_valid_path(destination):
         print('Destination directory does not exist.')
         sys.exit(0)
