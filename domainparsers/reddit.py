@@ -136,10 +136,10 @@ class Reddit(object):
         """
         url = self.get_post_url(div)
         if self.known_file_format(url):
-            return image_dictionary(url, get_image_filename(url))
+            return self.image_dictionary(url, get_image_filename(url))
         image_url = get_image_link_from_allowed_domain(url, known_domain(url))
         filename = get_image_filename(image_url) if image_url else None
-        return image_dictionary(image_url, filename)
+        return self.image_dictionary(image_url, filename)
 
     def get_image_link_from_allowed_domain(url, domain):
         """
@@ -177,11 +177,11 @@ class Reddit(object):
         pattern = ''.join(['.+\\', extension])
         return re.match(pattern, candidate).group(0)
 
-    def image_dictionary(url, filename):
+    def image_dictionary(self, url, filename):
         """
         Returns a dictionary with image url and corresponding filename.
         """
-        return { 'image_url' : url, 'filename' : filename }
+        return {'image_url' : url, 'filename' : filename}
 
     def known_file_format(self, url):
         """
