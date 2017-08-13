@@ -112,13 +112,13 @@ class Reddit(object):
         """
         things = soup.find_all('div', attrs={'class' : re.compile(r'\sthing\sid-t3.+')})
         images = deque({
-                'url' : get_post_url(div),
+                'url' : self.get_post_url(div),
                 'image' : get_image(div),
-                'domain' : get_post_domain(div),
+                'domain' : self.get_post_domain(div),
                 'second_level_domain_name' : known_domain(url),
-                'post_title' : get_post_title(div),
-                'posted_on' : get_post_timestamp(div),
-                'link_to_comments' : get_link_to_comments(div),
+                'post_title' : self.get_post_title(div),
+                'posted_on' : self.get_post_timestamp(div),
+                'link_to_comments' : self.get_link_to_comments(div),
                 'on_page' : url,
                 'last_html_status' : None, # HTTP rename!
                 'html_status_token' : 0, # HTTP rename!
@@ -134,7 +134,7 @@ class Reddit(object):
         """
         Get image url and image filename.
         """
-        url = get_post_url(div)
+        url = self.get_post_url(div)
         if known_file_format(url):
             return image_dictionary(url, get_image_filename(url))
         image_url = get_image_link_from_allowed_domain(url, known_domain(url))
@@ -192,43 +192,43 @@ class Reddit(object):
                 return extension
         return None
 
-    def get_link_to_comments(div):
+    def get_link_to_comments(self, div):
         """
         Get a link to a comment section.
         """
         li = div.find('li', attrs={'class' : 'first'})
         return li.a['href']
 
-    def get_post_timestamp(div):
+    def get_post_timestamp(self, div):
         """
         Get time and date when post was created.
         """
         time = div.find('time')
         return time['datetime'] if time.has_attr('datetime') else None
 
-    def get_p_title_tag(div):
+    def get_p_title_tag(self, div):
         """
         Get <p> tag with class="title".
         """
         return div.find('p', attrs={'class' : 'title'})
 
-    def get_post_url(div):
+    def get_post_url(self, div):
         """
         Get url of a post.
         """
-        p = get_p_title_tag(div)
+        p = self.get_p_title_tag(div)
         return p.a['href']
 
-    def get_post_domain(div):
+    def get_post_domain(self, div):
         """
         Get domain of a post.
         """
-        p = get_p_title_tag(div)
+        p = self.get_p_title_tag(div)
         span = p.find('span', attrs={'class' : 'domain'})
         return span.a.string
 
-    def get_post_title(div):
+    def get_post_title(self, div):
         """
         Get title of a post.
         """
-        return get_p_title_tag(div).a.string
+        return self.get_p_title_tag(div).a.string
