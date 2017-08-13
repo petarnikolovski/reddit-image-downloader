@@ -95,7 +95,8 @@ class Reddit(object):
 
         crawl = True
         crawl_time = get_politeness_factor(Domains.REDDIT)
-        page = 1 if self.pages else 0 # turn into method
+        page = 1 if self.pages else 0
+        url = self.url # starting page
 
         while (page <= self.pages) and crawl:
             soup = self.make_beautiful_soup(url, driver)

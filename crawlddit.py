@@ -52,4 +52,4 @@ if __name__ == '__main__':
             count_downloadable_images(images) , len(images)
         )
     )
-    download_files(images, destination, verbose)
+    #download_files(images, destination, verbose)
