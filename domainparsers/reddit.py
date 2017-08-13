@@ -115,7 +115,7 @@ class Reddit(object):
                 'url' : self.get_post_url(div),
                 'image' : get_image(div),
                 'domain' : self.get_post_domain(div),
-                'second_level_domain_name' : known_domain(url),
+                'second_level_domain_name' : self.known_domain(url),
                 'post_title' : self.get_post_title(div),
                 'posted_on' : self.get_post_timestamp(div),
                 'link_to_comments' : self.get_link_to_comments(div),
@@ -137,7 +137,7 @@ class Reddit(object):
         url = self.get_post_url(div)
         if self.known_file_format(url):
             return self.image_dictionary(url, get_image_filename(url))
-        image_url = get_image_link_from_allowed_domain(url, known_domain(url))
+        image_url = get_image_link_from_allowed_domain(url, self.known_domain(url))
         filename = get_image_filename(image_url) if image_url else None
         return self.image_dictionary(image_url, filename)
 
@@ -159,7 +159,7 @@ class Reddit(object):
             return None
         # raise DomainMissingException('Unknown domain, missing parsing tools.')
 
-    def known_domain(url):
+    def known_domain(self, url):
         """
         Check if the domain is in the list of known/allowed domains.
         """

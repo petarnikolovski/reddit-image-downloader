@@ -5,6 +5,7 @@ import pytest
 from domainparsers.reddit import Reddit
 from domainparsers.reddit import RedditException
 from domainparsers.common import FileFormats
+from domainparsers.common import Domains
 
 @pytest.fixture
 def test_link():
@@ -57,3 +58,13 @@ def test_image_filename(test_link):
     assert test_link.get_image_filename(url_1) == result_1_2
     assert test_link.get_image_filename(url_2) == result_1_2
     assert test_link.get_image_filename(url_3) == result_3
+
+def test_domain(test_link):
+    """
+    Test if method known_domain returns correct domain.
+    """
+    url_1 = 'http://i.imgur.com/lciC5G8.jpg'
+    url_2 = 'https://www.instagram.com'
+    assert test_link.known_domain(url_1) == Domains.IMGUR
+    assert test_link.known_domain(url_2) == None
+    assert test_link.known_domain(test_link.url) == Domains.REDDIT
