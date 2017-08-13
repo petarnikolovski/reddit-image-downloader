@@ -9,14 +9,14 @@ from domainparsers.common import Domains
 
 @pytest.fixture
 def test_link():
-    return Reddit('https://www.reddit.com/r/MemeEconomy/')
+    return Reddit('https://www.reddit.com/r/MemeEconomy/', 15)
 
 def test_invalid_link():
     """
     Test if the class raises exception for the invalid link.
     """
     with pytest.raises(RedditException):
-        Reddit('https://reddit.com/')
+        Reddit('https://reddit.com/', None)
 
 def test_file_formats(test_link):
     """
@@ -68,3 +68,10 @@ def test_domain(test_link):
     assert test_link.known_domain(url_1) == Domains.IMGUR
     assert test_link.known_domain(url_2) == None
     assert test_link.known_domain(test_link.url) == Domains.REDDIT
+
+def test_normalization_of_images(test_link):
+    """
+    Test if normalize_pages returns 0 for None, or pages number otherwise.
+    """
+    assert test_link.pages == 15
+    assert Reddit('http://www.reddit.com/', None).pages == 0

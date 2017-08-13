@@ -34,14 +34,14 @@ class Reddit(object):
 
     def __init__(self, url, pages):
         self.url = self.sanitize(url)
-        self.pages = pages
+        self.pages = self.normalize_pages(pages)
         self.images = deque()
 
     def sanitize(self, url):
         """
         Check if the provided domain is indeed reddit.
         """
-        if re.match('https*\:\/\/www.reddit\.com\/', url):
+        if re.match('https?\:\/\/www.reddit\.com\/', url):
             return url
         raise RedditException('Invalid link.')
 
