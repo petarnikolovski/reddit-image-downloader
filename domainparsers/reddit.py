@@ -130,15 +130,15 @@ class Reddit(object):
 
         return (images, next_page)
 
-    def get_image(div):
+    def get_image(self, div):
         """
         Get image url and image filename.
         """
         url = self.get_post_url(div)
         if self.known_file_format(url):
-            return self.image_dictionary(url, get_image_filename(url))
+            return self.image_dictionary(url, self.get_image_filename(url))
         image_url = self.get_image_link_from_allowed_domain(url, self.known_domain(url))
-        filename = get_image_filename(image_url) if image_url else None
+        filename = self.get_image_filename(image_url) if image_url else None
         return self.image_dictionary(image_url, filename)
 
     def get_image_link_from_allowed_domain(self, url, domain):
