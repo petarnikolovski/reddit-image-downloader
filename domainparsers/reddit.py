@@ -87,7 +87,7 @@ class Reddit(object):
 
         images = deque()
         crawl = True
-        crawl_time = get_politeness_factor('reddit')
+        crawl_time = get_politeness_factor(Domains.REDDIT)
         page = 1 if pages else 0
 
         while (page <= pages) and crawl:
