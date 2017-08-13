@@ -33,3 +33,13 @@ def test_file_formats(test_link):
     assert test_link.known_file_format(url_2) == result_2
     assert test_link.known_file_format(url_3) == result_3
     assert test_link.known_file_format(url_4) == result_4
+
+def test_image_dictionary(test_link):
+    """
+    Test if the image_dictionary method returns dictinary in correct
+    format.
+    """
+    url = 'https://example.com'
+    filename = 'example.com'
+    result = {'url' : url, 'filename' : filename}
+    assert test_link.image_dictionary(url, filename) == result

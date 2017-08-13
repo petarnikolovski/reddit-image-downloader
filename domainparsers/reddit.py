@@ -181,7 +181,7 @@ class Reddit(object):
         """
         Returns a dictionary with image url and corresponding filename.
         """
-        return {'image_url' : url, 'filename' : filename}
+        return {'url' : url, 'filename' : filename}
 
     def known_file_format(self, url):
         """
