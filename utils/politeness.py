@@ -3,6 +3,7 @@
 
 from math import log
 from math import exp
+from domainparsers.common import Domains
 
 
 def get_politeness_factor(domain):
@@ -16,14 +17,15 @@ def get_politeness_factor(domain):
     http://archive.is/AlBg0
     https://web.archive.org/web/20170730001425/https://stackoverflow.com/questions/8236046/typical-politeness-factor-for-a-web-crawler
     """
-    if not domain: domain = 'other'
+    if not domain or domain not in Domains.domains():
+        domain = 'other'
+
     DOMAIN_AUTHORITY = {
-        'reddit' : 99,
-        'imgur' : 93,
-        'gfycat' : 70,
-        'tumblr' : 99, # tumblr allows crawl time of 1s https://www.tumblr.com/robots.txt
-        'instagram' : None, # instagram robots.txt forbids all bots
-        'blogspot' : None,
+        Domains.REDDIT : 99,
+        Domains.IMGUR : 93,
+        Domains.GFYCAT : 70,
+        Domains.TUMBLR : 100, # tumblr allows crawl time of 1s https://www.tumblr.com/robots.txt
+        Domains.BLOGSPOT : None,
         'other' : 0,
     }
     domain_size = DOMAIN_AUTHORITY[domain] // 10
