@@ -168,7 +168,7 @@ class Reddit(object):
                 return domain
         return None
 
-    def get_image_filename(url):
+    def get_image_filename(self, url):
         """
         Get image file name from its url.
         """

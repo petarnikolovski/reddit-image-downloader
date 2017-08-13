@@ -43,3 +43,17 @@ def test_image_dictionary(test_link):
     filename = 'example.com'
     result = {'url' : url, 'filename' : filename}
     assert test_link.image_dictionary(url, filename) == result
+
+def test_image_filename(test_link):
+    """
+    Test whether the image filename function returns the correct file
+    name.
+    """
+    url_1 = 'http://i.imgur.com/lciC5G8.jpg'
+    url_2 = 'http://i.imgur.com/lciC5G8.jpg?1'
+    url_3 = 'http://i.imgur.com/lciC5G8.png'
+    result_1_2 = 'lciC5G8.jpg'
+    result_3 = 'lciC5G8.png'
+    assert test_link.get_image_filename(url_1) == result_1_2
+    assert test_link.get_image_filename(url_2) == result_1_2
+    assert test_link.get_image_filename(url_3) == result_3
