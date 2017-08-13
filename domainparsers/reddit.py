@@ -135,7 +135,7 @@ class Reddit(object):
         Get image url and image filename.
         """
         url = self.get_post_url(div)
-        if known_file_format(url):
+        if self.known_file_format(url):
             return image_dictionary(url, get_image_filename(url))
         image_url = get_image_link_from_allowed_domain(url, known_domain(url))
         filename = get_image_filename(image_url) if image_url else None
@@ -173,7 +173,7 @@ class Reddit(object):
         Get image file name from its url.
         """
         candidate = url.split('/')[-1]
-        extension = known_file_format(url)
+        extension = self.known_file_format(url)
         pattern = ''.join(['.+\\', extension])
         return re.match(pattern, candidate).group(0)
 
@@ -183,7 +183,7 @@ class Reddit(object):
         """
         return { 'image_url' : url, 'filename' : filename }
 
-    def known_file_format(url):
+    def known_file_format(self, url):
         """
         Check if the url contains known file format extension.
         """
