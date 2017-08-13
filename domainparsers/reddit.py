@@ -105,7 +105,7 @@ class Reddit(object):
         driver.close()
         return images
 
-    def get_files_from_a_page(soup, url=None):
+    def get_files_from_a_page(self, soup, url=None):
         """
         Get links and other information to all files from a single page.
         Return link for next page if it exists.
@@ -113,15 +113,15 @@ class Reddit(object):
         things = soup.find_all('div', attrs={'class' : re.compile(r'\sthing\sid-t3.+')})
         images = deque({
                 'url' : self.get_post_url(div),
-                'image' : get_image(div),
+                'image' : self.get_image(div),
                 'domain' : self.get_post_domain(div),
                 'second_level_domain_name' : self.known_domain(url),
                 'post_title' : self.get_post_title(div),
                 'posted_on' : self.get_post_timestamp(div),
                 'link_to_comments' : self.get_link_to_comments(div),
                 'on_page' : url,
-                'last_html_status' : None, # HTTP rename!
-                'html_status_token' : 0, # HTTP rename!
+                'last_http_status' : None,
+                'http_status_token' : 0,
             } for div in things
         )
 
