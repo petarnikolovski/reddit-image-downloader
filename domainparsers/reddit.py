@@ -137,11 +137,11 @@ class Reddit(object):
         url = self.get_post_url(div)
         if self.known_file_format(url):
             return self.image_dictionary(url, get_image_filename(url))
-        image_url = get_image_link_from_allowed_domain(url, self.known_domain(url))
+        image_url = self.get_image_link_from_allowed_domain(url, self.known_domain(url))
         filename = get_image_filename(image_url) if image_url else None
         return self.image_dictionary(image_url, filename)
 
-    def get_image_link_from_allowed_domain(url, domain):
+    def get_image_link_from_allowed_domain(self, url, domain):
         """
         Use correct domain parser.
         """
