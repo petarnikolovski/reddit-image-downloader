@@ -32,8 +32,10 @@ class RedditException(Exception):
 
 class Reddit(object):
 
-    def __init__(self, url):
+    def __init__(self, url, pages):
         self.url = self.sanitize(url)
+        self.pages = pages
+        self.images = deque()
 
     def sanitize(self, url):
         """
@@ -42,6 +44,12 @@ class Reddit(object):
         if re.match('https*\:\/\/www.reddit\.com\/', url):
             return url
         raise RedditException('Invalid link.')
+
+    def normalize_pages(self, pages):
+        """
+        If input pages are of None type, turn them into int type.
+        """
+        return 0 if not pages else pages
 
     def make_beautiful_soup(self, url, driver, parser='lxml'):
         """
@@ -78,32 +86,31 @@ class Reddit(object):
             driver.save_screenshot('screenshot.png')
             print('Loading taking too much time.\n', e)
 
-    def get_all_posts(url, pages):
+    def get_all_posts(self):
         """
         Crawl links of all posts, or posts from P number of pages. If P
         i.e. 'pages' is 0, then crawl all pages.
         """
         driver = webdriver.PhantomJS()
 
-        images = deque()
         crawl = True
         crawl_time = get_politeness_factor(Domains.REDDIT)
-        page = 1 if pages else 0
+        page = 1 if self.pages else 0 # turn into method
 
-        while (page <= pages) and crawl:
-            soup = make_beautiful_soup(url, driver)
-            pictures, next_page = get_files_from_a_page(soup, url)
+        while (page <= self.pages) and crawl:
+            soup = self.make_beautiful_soup(url, driver)
+            pictures, next_page = self.get_files_from_a_page(soup, url)
 
-            images.extend(pictures)
+            self.images.extend(pictures)
             url = next_page
 
-            if pages: page += 1
+            if self.pages: page += 1
             if not next_page: crawl = False
 
             sleep(crawl_time)
 
         driver.close()
-        return images
+        return
 
     def get_files_from_a_page(self, soup, url=None):
         """
