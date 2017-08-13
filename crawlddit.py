@@ -5,9 +5,8 @@ import sys
 from argparse import ArgumentParser
 from utils.debugtools import count_downloadable_images
 from utils.downloader import download_files
-from utils.consoleaccessories import is_valid_domain
 from utils.consoleaccessories import is_valid_path
-from domainparsers.reddit import get_all_posts
+from domainparsers.reddit import Reddit
 
 
 def parse_arguments():
@@ -44,8 +43,9 @@ if __name__ == '__main__':
         sys.exit(0)
 
     if verbose: print('Fetching available links...')
-    if not pages: pages = 0
-    images = get_all_posts(url, pages)
+    reddit = Reddit(url, pages)
+    reddit.get_all_posts()
+    images = reddit.images
 
     if verbose: print(
         '{}/{} images available for download.'.format(
