@@ -20,6 +20,7 @@ from domainparsers.common import FileFormats
 from domainparsers.common import Domains
 from utils.politeness import get_politeness_factor
 from collections import deque
+from itertools import groupby
 from time import sleep
 
 
@@ -35,7 +36,7 @@ class Reddit(object):
     def __init__(self, url, pages):
         self.url = self.sanitize(url)
         self.pages = self.normalize_pages(pages)
-        self.images = deque()
+        self.images = deque() # consider changing images to posts
 
     def sanitize(self, url):
         """
@@ -240,3 +241,17 @@ class Reddit(object):
         Get title of a post.
         """
         return self.get_p_title_tag(div).a.string
+
+    def get_all_domains(self):
+        """
+        Get all domains from list of files.
+        """
+        domains = []
+        for image in self.images:
+            domains.append(image['domain'])
+
+        domains.sort()
+        grouped_domains = []
+        for key, group in groupby(domains):
+            grouped_domains.append((len(list(group)), key))
+        return grouped_domains

@@ -6,24 +6,6 @@ Debugging, and analysis tools.
 """
 
 
-from itertools import groupby
-
-
-def get_all_domains(posts):
-    """
-    Get all domains from list of files.
-    """
-    domains = []
-    for post in posts:
-        domains.append(post['domain'])
-
-    domains.sort()
-    grouped_domains = []
-    for key, group in groupby(domains):
-        grouped_domains.append((len(list(group)), key))
-    return grouped_domains
-
-
 def print_all_domains(domains):
     """
     Print list of all domains appearing in /r group. First element is
