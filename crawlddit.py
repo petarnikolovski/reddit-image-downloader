@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     if verbose: print(
         '{}/{} images available for download.'.format(
-            count_downloadable_images(images) , len(images)
+            reddit.count_downloadable_images() , len(images)
         )
     )
     #download_files(images, destination, verbose)
