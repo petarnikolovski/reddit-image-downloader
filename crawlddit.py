@@ -1,11 +1,8 @@
 #!/usr/bin/python3
 
 
-import sys
 from argparse import ArgumentParser
-from utils.debugtools import count_downloadable_images
-from utils.downloader import download_files
-from utils.consoleaccessories import is_valid_path
+from utils.downloader import Downloader
 from domainparsers.reddit import Reddit
 
 
@@ -38,10 +35,6 @@ def parse_arguments():
 if __name__ == '__main__':
     verbose, pages, url, destination = parse_arguments()
 
-    if not is_valid_path(destination):
-        print('Destination directory does not exist.')
-        sys.exit(0)
-
     if verbose: print('Fetching available links...')
     reddit = Reddit(url, pages)
     reddit.get_all_posts()
@@ -52,4 +45,6 @@ if __name__ == '__main__':
             reddit.count_downloadable_images() , len(images)
         )
     )
-    #download_files(images, destination, verbose)
+
+    downloader = Downloader(images, destination, verbose)
+    downloader.download_files()
