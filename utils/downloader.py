@@ -19,6 +19,14 @@ from datetime import datetime
 from time import sleep
 
 
+class DownloaderException(Exception):
+    """
+    Raise this exception if there is something wrong with supplied path or with
+    downloading process.
+    """
+    pass
+
+
 DB_TEMPLATE = """
 DROP TABLE IF EXISTS images;
 
