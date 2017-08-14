@@ -14,7 +14,6 @@ from urllib.error import HTTPError
 from urllib.error import URLError
 from shutil import copyfileobj
 from utils.consoleaccessories import is_valid_path
-from utils.debugtools import count_downloadable_images
 from utils.logtools import write_log
 from utils.politeness import get_politeness_factor
 from datetime import datetime
@@ -183,3 +182,22 @@ def make_connection(path):
     Make connection to database.
     """
     return sqlite3.connect(path)
+
+
+def is_valid_path(path):
+    """
+    Checks if the directory/file exists on a given path.
+    """
+    return os.path.exists(path)
+
+
+def write_log(post):
+    """
+    Write to a log file.
+    """
+    with open('download.log', 'a') as f:
+        f.write(''.join(['-'*15, ' ', str(datetime.now()), ' ', '-'*15, '\n']))
+        f.write(''.join(['Post URL -> ', post['url'], '\n']))
+        f.write(''.join(['Post Comments -> ', post['link_to_comments'], '\n']))
+        f.write(''.join(['Last HTTP status -> ', str(post['last_html_status']), '\n']))
+        f.write('\n')
