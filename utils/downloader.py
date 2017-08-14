@@ -13,7 +13,6 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 from urllib.error import URLError
 from shutil import copyfileobj
-from utils.consoleaccessories import is_valid_path
 from utils.politeness import get_politeness_factor
 from datetime import datetime
 from time import sleep
@@ -47,107 +46,114 @@ class Downloader(object):
     );
     """
 
-    def download_files(files, destination, verbose):
+    def __init__(self, posts, destination, verbose):
+        self.files = posts
+        self.destination = valid_destination(destination)
+        self.verbose = verbose
+
+    def download_files(self):
         """
         This function downloads files to a specified directory. Destination
         is a path to a directory where images will be stored. If verbose is
         True, then the download status is displayed.
         """
         current_directory = os.getcwd()
-        os.chdir(destination)
+        os.chdir(self.destination)
 
         db_path = './db.sqlite'
 
         # Check if db exists in destination directory
-        if not is_valid_path(db_path):
+        if not self.db_exists(db_path):
             conn = make_connection(db_path)
             c = conn.cursor()
-            c.executescript(DB_TEMPLATE)
+            c.executescript(self.DB_TEMPLATE)
             conn.commit()
 
-        conn = make_connection(db_path)
+        conn = self.make_connection(db_path)
         c = conn.cursor()
 
         # Download, deal with exception, save to db, log things...
         total = count_downloadable_images(files)
         currently_downloading = 1
-        while files:
-            file_obj = files.popleft()
+        while self.files:
+            file_obj = self.files.popleft()
 
             image_url = file_obj['image']['url']
             filename = file_obj['image']['filename']
             token = file_obj['http_status_token']
 
-            # to implement: check db if file was downloaded already
+            # to implement: check in db if file was downloaded already
             if image_url and token < 3:
-                if verbose: display_status(file_obj['image']['url'], currently_downloading, total)
+                if self.verbose:
+                    self.display_status(file_obj['image']['url'], currently_downloading, total)
+
                 sldn = file_obj['second_level_domain_name']
                 crawl_time = get_politeness_factor(sldn)
 
                 try:
-                    write_file_to_filesystem(image_url, filename)
+                    self.write_file_to_filesystem(image_url, filename)
                 except HTTPError as e:
                     status = e.code
                     print('Could not download, error status:', status)
 
                     if status == 404:
-                        if verbose: print('File not found.')
+                        if self.verbose: print('File not found.')
                         file_obj['last_http_status'] = status
 
-                        write_a_record_to_db(c, file_obj, status, 0)
-                        write_log(file_obj)
+                        self.write_a_record_to_db(c, file_obj, status, 0)
+                        self.write_log(file_obj)
                         currently_downloading += 1
                     elif status == 429:
-                        if verbose: print('Too many requests were made to the server')
+                        if self.verbose: print('Too many requests were made to the server')
                         file_obj['last_http_status'] = status
 
-                        write_a_record_to_db(c, file_obj, status, 0)
-                        write_log(file_obj)
+                        self.write_a_record_to_db(c, file_obj, status, 0)
+                        self.write_log(file_obj)
                         currently_downloading += 1
                     elif status == 403:
-                        if verbose: print('Forbidden.')
+                        if self.verbose: print('Forbidden.')
                         file_obj['last_http_status'] = status
 
-                        write_a_record_to_db(c, file_obj, status, 0)
-                        write_log(file_obj)
+                        self.write_a_record_to_db(c, file_obj, status, 0)
+                        self.write_log(file_obj)
                         currently_downloading += 1
                     else:
-                        if verbose and token < 2: print('Downloading will be retried later.')
-                        if verbose and token == 2: print('Could not download.')
+                        if self.verbose and token < 2: print('Downloading will be retried later.')
+                        if self.verbose and token == 2: print('Could not download.')
                         file_obj['last_http_status'] = status
                         file_obj['http_status_token'] += 1
 
                         if token < 3:
-                            files.append(file_obj)
+                            self.files.append(file_obj)
                         else:
-                            write_a_record_to_db(c, file_obj, status, 0)
-                            write_log(file_obj)
+                            self.write_a_record_to_db(c, file_obj, status, 0)
+                            self.write_log(file_obj)
                 except URLError as e:
-                    if verbose: print('Something went wrong.')
-                    if verbose: print(e.reason)
+                    if self.verbose: print('Something went wrong.')
+                    if self.verbose: print(e.reason)
 
-                    write_a_record_to_db(c, file_obj, file_obj['last_http_status'], 0)
-                    write_log(file_obj)
+                    self.write_a_record_to_db(c, file_obj, file_obj['last_http_status'], 0)
+                    self.write_log(file_obj)
                     currently_downloading += 1
                 else:
                     # This is else from try/except - a bit unreadable
-                    write_a_record_to_db(c, file_obj, 200, 1)
+                    self.write_a_record_to_db(c, file_obj, 200, 1)
                     currently_downloading += 1
 
                 # If two consecutive domains are different, there is no need to
                 # wait for the next download
                 with suppress(IndexError):
-                    if file_obj['domain'] == files[1]['domain']:
+                    if file_obj['domain'] == self.files[1]['domain']:
                         sleep(crawl_time)
             else:
                 # write_a_record_to_db(c, file_obj, file_obj['last_http_status'], 0)
-                write_log(file_obj)
+                self.write_log(file_obj)
 
         conn.commit()
         conn.close()
         os.chdir(current_directory)
 
-    def write_a_record_to_db(cursor, file_obj, status, downloaded):
+    def write_a_record_to_db(self, cursor, file_obj, status, downloaded):
         """
         Insert metadata into database.
         """
@@ -165,14 +171,14 @@ class Downloader(object):
         )
         cursor.execute("INSERT INTO images VALUES(?,?,?,?,?,?,?,?,?,?)", image)
 
-    def write_file_to_filesystem(url, filename):
+    def write_file_to_filesystem(self, url, filename):
         """
         Write a file to a file system.
         """
         with urlopen(url) as r, open(filename, 'wb') as f:
             copyfileobj(r, f)
 
-    def display_status(url, currently_at, total):
+    def display_status(self, url, currently_at, total):
         """
         Display the link of the image which is downloading, and download
         progress.
@@ -183,19 +189,27 @@ class Downloader(object):
             )
         )
 
-    def make_connection(path):
+    def make_connection(self, path):
         """
         Make connection to database.
         """
         return sqlite3.connect(path)
 
-    def is_valid_path(path):
+    def db_exists(self, path):
         """
         Checks if the directory/file exists on a given path.
         """
         return os.path.exists(path)
 
-    def write_log(post):
+    def valid_destination(self, destination):
+        """
+        Check if destination directory provided by the user is valid.
+        """
+        if os.path.exists(path):
+            return path
+        raise DownloaderException('Destination directory does not exist.')
+
+    def write_log(self, post):
         """
         Write to a log file.
         """
