@@ -14,7 +14,6 @@ from urllib.error import HTTPError
 from urllib.error import URLError
 from shutil import copyfileobj
 from utils.consoleaccessories import is_valid_path
-from utils.logtools import write_log
 from utils.politeness import get_politeness_factor
 from datetime import datetime
 from time import sleep
