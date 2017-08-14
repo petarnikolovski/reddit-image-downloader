@@ -46,5 +46,5 @@ if __name__ == '__main__':
         )
     )
 
-    downloader = Downloader(images, destination, verbose)
+    downloader = Downloader(reddit, destination, verbose)
     downloader.download_files()

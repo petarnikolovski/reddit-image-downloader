@@ -46,9 +46,10 @@ class Downloader(object):
     );
     """
 
-    def __init__(self, posts, destination, verbose):
-        self.files = posts
-        self.destination = valid_destination(destination)
+    def __init__(self, reddit, destination, verbose):
+        self.files = reddit.images
+        self.total = reddit.count_downloadable_images()
+        self.destination = self.valid_destination(destination)
         self.verbose = verbose
 
     def download_files(self):
@@ -64,7 +65,7 @@ class Downloader(object):
 
         # Check if db exists in destination directory
         if not self.db_exists(db_path):
-            conn = make_connection(db_path)
+            conn = self.make_connection(db_path)
             c = conn.cursor()
             c.executescript(self.DB_TEMPLATE)
             conn.commit()
@@ -73,7 +74,6 @@ class Downloader(object):
         c = conn.cursor()
 
         # Download, deal with exception, save to db, log things...
-        total = count_downloadable_images(files)
         currently_downloading = 1
         while self.files:
             file_obj = self.files.popleft()
@@ -85,7 +85,7 @@ class Downloader(object):
             # to implement: check in db if file was downloaded already
             if image_url and token < 3:
                 if self.verbose:
-                    self.display_status(file_obj['image']['url'], currently_downloading, total)
+                    self.display_status(file_obj['image']['url'], currently_downloading, self.total)
 
                 sldn = file_obj['second_level_domain_name']
                 crawl_time = get_politeness_factor(sldn)
@@ -201,7 +201,7 @@ class Downloader(object):
         """
         return os.path.exists(path)
 
-    def valid_destination(self, destination):
+    def valid_destination(self, path):
         """
         Check if destination directory provided by the user is valid.
         """
@@ -217,5 +217,5 @@ class Downloader(object):
             f.write(''.join(['-'*15, ' ', str(datetime.now()), ' ', '-'*15, '\n']))
             f.write(''.join(['Post URL -> ', post['url'], '\n']))
             f.write(''.join(['Post Comments -> ', post['link_to_comments'], '\n']))
-            f.write(''.join(['Last HTTP status -> ', str(post['last_html_status']), '\n']))
+            f.write(''.join(['Last HTTP status -> ', str(post['last_http_status']), '\n']))
             f.write('\n')
