@@ -65,13 +65,13 @@ def download_files(files, destination, verbose):
     while files:
         file_obj = files.popleft()
 
-        image_url = file_obj['image']['image_url']
+        image_url = file_obj['image']['url']
         filename = file_obj['image']['filename']
-        token = file_obj['html_status_token']
+        token = file_obj['http_status_token']
 
         # to implement: check db if file was downloaded already
         if image_url and token < 3:
-            if verbose: display_status(file_obj['image']['image_url'], currently_downloading, total)
+            if verbose: display_status(file_obj['image']['url'], currently_downloading, total)
             sldn = file_obj['second_level_domain_name']
             crawl_time = get_politeness_factor(sldn)
 
@@ -81,16 +81,23 @@ def download_files(files, destination, verbose):
                 status = e.code
                 print('Could not download, error status:', status)
 
-                if status == '404':
+                if status == 404:
                     if verbose: print('File not found.')
-                    file_obj['last_html_status'] = status
+                    file_obj['last_http_status'] = status
 
                     write_a_record_to_db(c, file_obj, status, 0)
                     write_log(file_obj)
                     currently_downloading += 1
-                elif status == '429':
+                elif status == 429:
                     if verbose: print('Too many requests were made to the server')
-                    file_obj['last_html_status'] = status
+                    file_obj['last_http_status'] = status
+
+                    write_a_record_to_db(c, file_obj, status, 0)
+                    write_log(file_obj)
+                    currently_downloading += 1
+                elif status == 403:
+                    if verbose: print('Forbidden.')
+                    file_obj['last_http_status'] = status
 
                     write_a_record_to_db(c, file_obj, status, 0)
                     write_log(file_obj)
@@ -98,8 +105,8 @@ def download_files(files, destination, verbose):
                 else:
                     if verbose and token < 2: print('Downloading will be retried later.')
                     if verbose and token == 2: print('Could not download.')
-                    file_obj['last_html_status'] = status
-                    file_obj['html_status_token'] += 1
+                    file_obj['last_http_status'] = status
+                    file_obj['http_status_token'] += 1
 
                     if token < 3:
                         files.append(file_obj)
@@ -110,7 +117,7 @@ def download_files(files, destination, verbose):
                 if verbose: print('Something went wrong.')
                 if verbose: print(e.reason)
 
-                write_a_record_to_db(c, file_obj, file_obj['last_html_status'], 0)
+                write_a_record_to_db(c, file_obj, file_obj['last_http_status'], 0)
                 write_log(file_obj)
                 currently_downloading += 1
             else:
@@ -124,7 +131,7 @@ def download_files(files, destination, verbose):
                 if file_obj['domain'] == files[1]['domain']:
                     sleep(crawl_time)
         else:
-            # write_a_record_to_db(c, file_obj, file_obj['last_html_status'], 0)
+            # write_a_record_to_db(c, file_obj, file_obj['last_http_status'], 0)
             write_log(file_obj)
 
     conn.commit()
@@ -138,7 +145,7 @@ def write_a_record_to_db(cursor, file_obj, status, downloaded):
     """
     image = (
         file_obj['url'],
-        file_obj['image']['image_url'],
+        file_obj['image']['url'],
         file_obj['image']['filename'],
         file_obj['domain'],
         file_obj['post_title'],
