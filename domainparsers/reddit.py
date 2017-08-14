@@ -265,3 +265,12 @@ class Reddit(object):
         domains = self.get_all_domains()
         for domain in sorted(domains, key=lambda x: x[0]):
             print(domain[0], domain[1])
+
+    def count_downloadable_images(self):
+        """
+        Count images from post that have direct download link available.
+        """
+        downloadable = 0
+        for post in self.images:
+            if post['image']['url']: downloadable += 1
+        return downloadable
