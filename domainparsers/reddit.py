@@ -2,7 +2,23 @@
 
 
 """
-Parser for reddit.
+This module contains classes for parsing the subreddits. It consists of two
+classes:
+
+~ RedditException
+~ Reddit
+
+Reddit is the main class and it obtains list of direct image urls that could be
+used to download images. Example usage:
+
+```python3
+reddit = Reddit('https://www.reddit.com/r/MemeEconomy/', 2)
+reddit.get_all_posts()
+images = reddit.images
+```
+
+reddit.images is a deque consisting of dictionaries. For more information about
+this structure, see get_files_from_a_page() method.
 """
 
 

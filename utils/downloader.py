@@ -2,7 +2,16 @@
 
 
 """
-Downloads files.
+Download images from reddit. Use this in combination with Reddit class. Example:
+
+```python3
+reddit = Reddit('https://www.reddit.com/r/MemeEconomy/', 2)
+reddit.get_all_posts()
+images = reddit.images
+
+downloader = Downloader(reddit, '~/memes', verbose=True)
+downloader.download_files()
+```
 """
 
 
