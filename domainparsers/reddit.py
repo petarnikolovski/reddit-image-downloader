@@ -32,6 +32,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from domainparsers.gfycat import Gfycat
+from domainparsers.imgur import Imgur
 from domainparsers.common import FileFormats
 from domainparsers.common import Domains
 from utils.politeness import get_politeness_factor
@@ -173,9 +174,24 @@ class Reddit(object):
         if domain == Domains.REDDIT:
             return None
         elif domain == Domains.IMGUR:
+            # If url contains www.imgur, skip it
+            # This is a lame bug fix, but Imgur class doesn't deal with URLs
+            # of that type. This is because when a user visits a link such as this:
+            # www.imgur.com/album_hash they are re-directed to imgur.com/album_hash
+            if 'www.imgur' in url: return None
+
+            print(url)
+
+            imgur = Imgur(url)
+            if imgur.is_it_image():
+                imgur.prepare_images()
+                print(imgur.images)
+                return imgur.images[0]['url']
             return None
+
         elif domain == Domains.GFYCAT:
             return Gfycat(url).parse_gfycat()
+
         elif domain == Domains.TUMBLR:
             return None
         elif domain == Domains.BLOGSPOT:
