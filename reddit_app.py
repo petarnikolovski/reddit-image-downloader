@@ -14,13 +14,13 @@ from tkinter import Frame
 from tkinter import filedialog
 from tkinter import Label
 from tkinter import Button
+from tkinter import messagebox
 from tkinter import StringVar
 from tkinter import IntVar
 from tkinter import Entry
 from tkinter import TOP
 from tkinter import E
 from tkinter import W
-
 
 class RedditApp(Frame):
 
@@ -47,12 +47,12 @@ class RedditApp(Frame):
             paths_frame, text='(Leave zero to crawl all pages)'
         )
 
-        url_var = StringVar()
-        pages_var = IntVar()
+        self.url_var = StringVar()
+        self.pages_var = IntVar()
         self.destination_var = StringVar()
 
-        url = Entry(paths_frame, textvariable=url_var)
-        pages = Entry(paths_frame, textvariable=pages_var)
+        url = Entry(paths_frame, textvariable=self.url_var)
+        pages = Entry(paths_frame, textvariable=self.pages_var)
         destination = Entry(paths_frame, textvariable=self.destination_var)
 
         btn_chooser = Button(
@@ -96,7 +96,14 @@ class RedditApp(Frame):
         self.destination_var.set(destination_path)
 
     def download_reddit(self):
-        pass
+        print(self.url_var.get())
+
+        try:
+            print(self.pages_var.get())
+        except:
+            messagebox.showerror('Error', 'Please input only whole numbers')
+
+        print(self.destination_var.get())
 
 
 class AboutWindow(object):
