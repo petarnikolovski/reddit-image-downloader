@@ -12,6 +12,7 @@ from tkinter import filedialog
 from tkinter import Label
 from tkinter import Button
 from tkinter import StringVar
+from tkinter import IntVar
 from tkinter import Entry
 from tkinter import TOP
 from tkinter import E
@@ -40,11 +41,11 @@ class RedditApp(Frame):
         lbl_destination = Label(paths_frame, text='Destination:')
 
         lbl_pages_help = Label(
-            paths_frame, text='(Leave empty to crawl all pages)'
+            paths_frame, text='(Leave zero to crawl all pages)'
         )
 
         url_var = StringVar()
-        pages_var = StringVar()
+        pages_var = IntVar()
         self.destination_var = StringVar()
 
         url = Entry(paths_frame, textvariable=url_var)
