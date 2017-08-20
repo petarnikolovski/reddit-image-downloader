@@ -7,6 +7,7 @@ This is the GUI for the Reddit Downloader.
 
 
 from tkinter import Tk
+from tkinter import Menu
 from tkinter import Frame
 from tkinter import filedialog
 from tkinter import Label
@@ -100,6 +101,11 @@ if __name__ == '__main__':
     root = Tk()
     root.resizable(0, 0)
     root.wm_title('(sub)Reddit Downloader')
+
+    menubar = Menu(root)
+    menubar.add_command(label='About', command=root.quit)
+    menubar.add_command(label='Exit', command=root.quit)
+    root.config(menu=menubar)
 
     app = RedditApp(master=root)
     app.mainloop()
