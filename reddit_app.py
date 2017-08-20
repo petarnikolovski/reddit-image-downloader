@@ -9,6 +9,13 @@ This is the GUI for the Reddit Downloader.
 from tkinter import Tk
 from tkinter import Frame
 from tkinter import filedialog
+from tkinter import Label
+from tkinter import Button
+from tkinter import StringVar
+from tkinter import Entry
+from tkinter import TOP
+from tkinter import E
+from tkinter import W
 
 
 class RedditApp(Frame):
@@ -25,7 +32,50 @@ class RedditApp(Frame):
         """
         Create widgets to populate the applications frame.
         """
-        pass
+        # URL, Pages, Destination
+        paths_frame = Frame(self)
+
+        lbl_url = Label(paths_frame, text='URL:')
+        lbl_pages = Label(paths_frame, text='Pages:')
+        lbl_destination = Label(paths_frame, text='Destination:')
+
+        lbl_pages_help = Label(
+            paths_frame, text='(Leave empty to crawl all pages)'
+        )
+
+        url_var = StringVar()
+        pages_var = StringVar()
+        destination_var = StringVar()
+
+        url = Entry(paths_frame, textvariable=url_var)
+        pages = Entry(paths_frame, textvariable=pages_var)
+        destination = Entry(paths_frame, textvariable=destination_var)
+
+        btn_chooser = Button(
+            paths_frame, text='Destination', command=self.choose_directory
+        )
+
+        pad_x = 5
+        pad_y = 7
+
+        r = 0
+        lbl_url.grid(row=r, column=0, sticky=E, padx=pad_x, pady=pad_y)
+        url.grid(row=r, column=1)
+
+        r += 1
+        lbl_pages.grid(row=r, column=0, sticky=E)
+        pages.grid(row=r, column=1, padx=pad_x, pady=pad_y)
+        lbl_pages_help.grid(row=r, column=2)
+
+        r += 1
+        lbl_destination.grid(row=r, column=0, sticky=E)
+        destination.grid(row=r, column=1, padx=pad_x, pady=pad_y)
+        btn_chooser.grid(row=r, column=2, sticky=E+W)
+
+        paths_frame.pack(side=TOP, padx=10, pady=10)
+
+    def choose_directory(self):
+        destination_path = filedialog.askdirectory(initialdir='~')
 
 
 if __name__ == '__main__':
