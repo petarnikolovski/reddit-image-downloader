@@ -147,7 +147,8 @@ class RedditApp(Frame):
             text='Fetching data...', fg='red', font=(font.BOLD)
             )
 
-            #reddit.prepare_images()
+            reddit.get_all_posts()
+            reddit.images
         except RedditException:
             messagebox.showerror('Error', 'Please input valid link')
         except Exception:
