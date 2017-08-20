@@ -7,6 +7,8 @@ This is the GUI for the Reddit Downloader.
 
 
 from tkinter import Tk
+from tkinter import Toplevel
+from tkinter import Message
 from tkinter import Menu
 from tkinter import Frame
 from tkinter import filedialog
@@ -96,6 +98,33 @@ class RedditApp(Frame):
     def download_reddit(self):
         pass
 
+
+class AboutWindow(object):
+    """
+    This is the Reddit Image Downloader. Paste URL into corresponding field,
+    choose path to download directory, and choose how many pages of a subreddit
+    you want to crawl.
+
+    The application was made by petarGitNik (https://github.com/petargitnik).
+    """
+
+    @classmethod
+    def about(cls):
+        """
+        Launch about window.
+        """
+        top = Toplevel()
+        top.resizable(0, 0)
+        top.title('About the application')
+
+        about_message = AboutWindow.__doc__
+        msg = Message(top, text=about_message)
+        msg.pack()
+
+        btn_dismiss = Button(top, text='Dismiss', command=top.destroy)
+        btn_dismiss.pack()
+
+
 if __name__ == '__main__':
 
     root = Tk()
@@ -103,7 +132,7 @@ if __name__ == '__main__':
     root.wm_title('(sub)Reddit Downloader')
 
     menubar = Menu(root)
-    menubar.add_command(label='About', command=root.quit)
+    menubar.add_command(label='About', command=AboutWindow.about)
     menubar.add_command(label='Exit', command=root.quit)
     root.config(menu=menubar)
 
