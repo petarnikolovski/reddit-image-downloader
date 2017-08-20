@@ -6,6 +6,11 @@ This is the GUI for the Reddit Downloader.
 """
 
 
+from domainparsers.reddit import Reddit
+from domainparsers.reddit import RedditException
+from utils.downloader import Downloader
+from utils.downloader import DownloaderException
+
 from tkinter import Tk
 from tkinter import Toplevel
 from tkinter import Message
@@ -83,10 +88,10 @@ class RedditApp(Frame):
         # Download button
         download_frame = Frame(self)
 
-        btn_download = Button(
+        self.btn_download = Button(
             download_frame, text='Download', command=self.download_reddit
         )
-        btn_download.pack(padx=10, pady=10)
+        self.btn_download.pack(padx=10, pady=10)
 
         download_frame.pack(side=TOP)
 
@@ -108,19 +113,34 @@ class RedditApp(Frame):
         self.destination_var.set(destination_path)
 
     def download_reddit(self):
-        print(self.url_var.get())
-
+        """
+        Download images from subreddit.
+        """
         try:
-            print(self.pages_var.get())
-        except:
+            reddit = Reddit(self.url_var.get(), self.pages_var.get())
+
+            self.btn_download.configure(text='Cancel', command=self.cancel_download)
+
+            #reddit.prepare_images()
+            self.lbl_progress_info.configure(
+                text='Fetching data...', fg='red', font=(font.BOLD)
+            )
+        except RedditException:
+            messagebox.showerror('Error', 'Please input valid link')
+        except Exception:
             messagebox.showerror('Error', 'Please input only whole numbers')
 
+        """
+        # catch DownloaderException
         print(self.destination_var.get())
+        """
 
-        self.lbl_progress_info.configure(
-            text='Fetching data...', fg='red', font=(font.BOLD)
-        )
-
+    def cancel_download(self):
+        """
+        Cancel download process.
+        """
+        self.btn_download.configure(text='Download', command=self.download_reddit)
+        raise Exception
 
 class AboutWindow(object):
     """
