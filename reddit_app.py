@@ -12,6 +12,7 @@ from tkinter import Message
 from tkinter import Menu
 from tkinter import Frame
 from tkinter import filedialog
+from tkinter import font
 from tkinter import Label
 from tkinter import Button
 from tkinter import messagebox
@@ -21,6 +22,7 @@ from tkinter import Entry
 from tkinter import TOP
 from tkinter import E
 from tkinter import W
+
 
 class RedditApp(Frame):
 
@@ -84,9 +86,19 @@ class RedditApp(Frame):
         btn_download = Button(
             download_frame, text='Download', command=self.download_reddit
         )
-        btn_download.pack()
+        btn_download.pack(padx=10, pady=10)
 
         download_frame.pack(side=TOP)
+
+        # Progress label
+        progress_info = Frame(self)
+
+        self.lbl_progress_info = Label(progress_info, text='')
+        self.lbl_progress_info.pack(padx=10, pady=10)
+
+        progress_info.pack(side=TOP)
+
+        # Download bar
 
     def choose_directory(self):
         """
@@ -104,6 +116,10 @@ class RedditApp(Frame):
             messagebox.showerror('Error', 'Please input only whole numbers')
 
         print(self.destination_var.get())
+
+        self.lbl_progress_info.configure(
+            text='Fetching data...', fg='red', font=(font.BOLD)
+        )
 
 
 class AboutWindow(object):
