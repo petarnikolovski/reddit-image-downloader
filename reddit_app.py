@@ -36,8 +36,14 @@ class RedditApp(Frame):
         Initialize the main application Frame and load it with other widgets.
         """
         super().__init__(master)
+        self.root = master
         self.pack()
+        self.setup_main_frame()
         self.create_widgets()
+
+    def setup_main_frame(self):
+        self.root.resizable(0, 0)
+        self.root.wm_title('(sub)Reddit Downloader')
 
     def create_widgets(self):
         """
@@ -142,6 +148,7 @@ class RedditApp(Frame):
         self.btn_download.configure(text='Download', command=self.download_reddit)
         raise Exception
 
+
 class AboutWindow(object):
     """
     This is the Reddit Image Downloader. Paste URL into corresponding field,
@@ -171,8 +178,6 @@ class AboutWindow(object):
 if __name__ == '__main__':
 
     root = Tk()
-    root.resizable(0, 0)
-    root.wm_title('(sub)Reddit Downloader')
 
     menubar = Menu(root)
     menubar.add_command(label='About', command=AboutWindow.about)
