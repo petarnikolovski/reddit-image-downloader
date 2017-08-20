@@ -121,7 +121,7 @@ class RedditApp(Frame):
         progress_frame = Frame(self)
 
         progress_bar = Progressbar(
-            progress_frame, orient='horizontal', length=400
+            progress_frame, orient='horizontal', length=400, mode='determinate'
         )
         progress_bar.pack(padx=10, pady=10)
 
