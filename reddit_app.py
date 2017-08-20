@@ -47,7 +47,7 @@ class RedditApp(Frame):
         self.root.wm_title('(sub)Reddit Downloader')
 
     def create_menubar(self):
-        menubar = Menu(root)
+        menubar = Menu(self.root)
         menubar.add_command(label='About', command=AboutWindow.about)
         menubar.add_command(label='Exit', command=self.root.quit)
         self.root.config(menu=menubar)
