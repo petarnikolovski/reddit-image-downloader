@@ -85,6 +85,9 @@ class RedditApp(Frame):
         download_frame.pack(side=TOP)
 
     def choose_directory(self):
+        """
+        Update the destination path entry filed with the chosen path.
+        """
         destination_path = filedialog.askdirectory(initialdir='~')
         self.destination_var.set(destination_path)
 
