@@ -45,11 +45,11 @@ class RedditApp(Frame):
 
         url_var = StringVar()
         pages_var = StringVar()
-        destination_var = StringVar()
+        self.destination_var = StringVar()
 
         url = Entry(paths_frame, textvariable=url_var)
         pages = Entry(paths_frame, textvariable=pages_var)
-        destination = Entry(paths_frame, textvariable=destination_var)
+        destination = Entry(paths_frame, textvariable=self.destination_var)
 
         btn_chooser = Button(
             paths_frame, text='Destination', command=self.choose_directory
@@ -84,6 +84,7 @@ class RedditApp(Frame):
 
     def choose_directory(self):
         destination_path = filedialog.askdirectory(initialdir='~')
+        self.destination_var.set(destination_path)
 
 
 if __name__ == '__main__':
