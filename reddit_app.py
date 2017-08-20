@@ -39,11 +39,18 @@ class RedditApp(Frame):
         self.root = master
         self.pack()
         self.setup_main_frame()
+        self.create_menubar()
         self.create_widgets()
 
     def setup_main_frame(self):
         self.root.resizable(0, 0)
         self.root.wm_title('(sub)Reddit Downloader')
+
+    def create_menubar(self):
+        menubar = Menu(root)
+        menubar.add_command(label='About', command=AboutWindow.about)
+        menubar.add_command(label='Exit', command=self.root.quit)
+        self.root.config(menu=menubar)
 
     def create_widgets(self):
         """
@@ -178,11 +185,5 @@ class AboutWindow(object):
 if __name__ == '__main__':
 
     root = Tk()
-
-    menubar = Menu(root)
-    menubar.add_command(label='About', command=AboutWindow.about)
-    menubar.add_command(label='Exit', command=root.quit)
-    root.config(menu=menubar)
-
     app = RedditApp(master=root)
     app.mainloop()
