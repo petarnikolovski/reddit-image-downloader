@@ -77,7 +77,9 @@ class RedditApp(Frame):
         # Download button
         download_frame = Frame(self)
 
-        btn_download = Button(download_frame, text='Download')
+        btn_download = Button(
+            download_frame, text='Download', command=self.download_reddit
+        )
         btn_download.pack()
 
         download_frame.pack(side=TOP)
@@ -86,6 +88,8 @@ class RedditApp(Frame):
         destination_path = filedialog.askdirectory(initialdir='~')
         self.destination_var.set(destination_path)
 
+    def download_reddit(self):
+        pass
 
 if __name__ == '__main__':
 
