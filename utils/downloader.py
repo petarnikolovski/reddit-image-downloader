@@ -55,7 +55,7 @@ class Downloader(object):
     );
     """
 
-    def __init__(self, reddit, destination, verbose):
+    def __init__(self, reddit, destination, verbose=False):
         self.files = reddit.images
         self.total = reddit.count_downloadable_images()
         self.destination = self.valid_destination(destination)

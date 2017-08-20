@@ -2,7 +2,8 @@
 
 
 """
-This is the GUI for the Reddit Downloader.
+This is the GUI for the Reddit Downloader. Unfortunately, it freazes during download.
+This is probably because the tkinter is single threaded.
 """
 
 
@@ -141,23 +142,25 @@ class RedditApp(Frame):
         try:
             reddit = Reddit(self.url_var.get(), self.pages_var.get())
 
-            self.btn_download.configure(text='Cancel', command=self.cancel_download)
-
-            self.lbl_progress_info.configure(
-            text='Fetching data...', fg='red', font=(font.BOLD)
-            )
-
+            #self.btn_download.configure(text='Cancel', command=self.cancel_download)
             reddit.get_all_posts()
-            reddit.images
+
+            try:
+                downloader = Downloader(
+                    reddit, self.destination_var.get()
+                )
+
+                downloader.download_files()
+            except DownloaderException:
+                messagebox.showerror('Error', 'Invalid download path')
         except RedditException:
             messagebox.showerror('Error', 'Please input valid link')
         except Exception:
             messagebox.showerror('Error', 'Please input only whole numbers')
 
-        """
-        # catch DownloaderException
-        print(self.destination_var.get())
-        """
+        self.lbl_progress_info.configure(
+            text='Download complete...', fg='red', font=(font.BOLD)
+        )
 
     def cancel_download(self):
         """
@@ -167,6 +170,7 @@ class RedditApp(Frame):
         self.lbl_progress_info.configure(
             text='Download canceled.', fg='red', font=(font.BOLD)
         )
+
 
 class AboutWindow(object):
     """

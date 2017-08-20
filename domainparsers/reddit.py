@@ -180,12 +180,9 @@ class Reddit(object):
             # www.imgur.com/album_hash they are re-directed to imgur.com/album_hash
             if 'www.imgur' in url: return None
 
-            print(url)
-
             imgur = Imgur(url)
             if imgur.is_it_image():
                 imgur.prepare_images()
-                print(imgur.images)
                 return imgur.images[0]['url']
             return None
 
