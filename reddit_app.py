@@ -27,6 +27,7 @@ from tkinter import Entry
 from tkinter import TOP
 from tkinter import E
 from tkinter import W
+from tkinter.ttk import Progressbar
 
 
 class RedditApp(Frame):
@@ -117,6 +118,14 @@ class RedditApp(Frame):
         progress_info.pack(side=TOP)
 
         # Download bar
+        progress_frame = Frame(self)
+
+        progress_bar = Progressbar(
+            progress_frame, orient='horizontal', length=400
+        )
+        progress_bar.pack(padx=10, pady=10)
+
+        progress_frame.pack(side=TOP)
 
     def choose_directory(self):
         """
@@ -134,10 +143,11 @@ class RedditApp(Frame):
 
             self.btn_download.configure(text='Cancel', command=self.cancel_download)
 
-            #reddit.prepare_images()
             self.lbl_progress_info.configure(
-                text='Fetching data...', fg='red', font=(font.BOLD)
+            text='Fetching data...', fg='red', font=(font.BOLD)
             )
+
+            #reddit.prepare_images()
         except RedditException:
             messagebox.showerror('Error', 'Please input valid link')
         except Exception:
@@ -153,8 +163,9 @@ class RedditApp(Frame):
         Cancel download process.
         """
         self.btn_download.configure(text='Download', command=self.download_reddit)
-        raise Exception
-
+        self.lbl_progress_info.configure(
+            text='Download canceled.', fg='red', font=(font.BOLD)
+        )
 
 class AboutWindow(object):
     """
