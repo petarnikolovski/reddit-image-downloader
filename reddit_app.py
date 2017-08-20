@@ -2,7 +2,7 @@
 
 
 """
-This is the GUI for the Reddit Downloader. Unfortunately, it freazes during download.
+This is the GUI for the Reddit Downloader. Unfortunately, it freezes during download.
 This is probably because the tkinter is single threaded.
 """
 
