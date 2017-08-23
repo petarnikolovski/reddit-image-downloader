@@ -36,6 +36,9 @@ imgur.images # These are not guaranteed to appear in order when downloaded
 imgur.numerate_images()
 images = imgur.images
 ```
+
+Note: For up to date version of this class visit:
+https://github.com/petarGitNik/imgur-downloader
 """
 
 

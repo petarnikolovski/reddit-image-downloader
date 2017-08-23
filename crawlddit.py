@@ -6,6 +6,14 @@ from utils.downloader import Downloader
 from domainparsers.reddit import Reddit
 
 
+__author__ = 'petarGitNik'
+__copyright__ = 'Copyright (c) 2017 petarGitNik petargitnik@gmail.com'
+__version__ = 'v0.1.0'
+__license__ = 'MIT'
+__email__ = 'petargitnik@gmail.com'
+__status__ = 'Development'
+
+
 def parse_arguments():
     """
     Parse input arguments of the program. Two positional arguments are

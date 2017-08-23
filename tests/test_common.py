@@ -5,6 +5,15 @@ import pytest
 from domainparsers.common import FileFormats
 from domainparsers.common import Domains
 
+
+__author__ = 'petarGitNik'
+__copyright__ = 'Copyright (c) 2017 petarGitNik petargitnik@gmail.com'
+__version__ = 'v0.1.0'
+__license__ = 'MIT'
+__email__ = 'petargitnik@gmail.com'
+__status__ = 'Development'
+
+
 def test_file_formats():
     """
     Test if formats class method returns a set of predefined formats.

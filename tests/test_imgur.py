@@ -7,6 +7,14 @@ from domainparsers.imgur import Imgur
 from domainparsers.imgur import ImgurException
 
 
+__author__ = 'petarGitNik'
+__copyright__ = 'Copyright (c) 2017 petarGitNik petargitnik@gmail.com'
+__version__ = 'v0.1.0'
+__license__ = 'MIT'
+__email__ = 'petargitnik@gmail.com'
+__status__ = 'Development'
+
+
 @pytest.fixture
 def single_image_i():
     return Imgur('http://i.imgur.com/jedEzFL.jpg')

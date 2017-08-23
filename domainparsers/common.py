@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 
 
+__author__ = 'petarGitNik'
+__copyright__ = 'Copyright (c) 2017 petarGitNik petargitnik@gmail.com'
+__version__ = 'v0.1.0'
+__license__ = 'MIT'
+__email__ = 'petargitnik@gmail.com'
+__status__ = 'Development'
+
+
 class FileFormats(object):
     JPG = '.jpg'
     JPEG = '.jpeg'

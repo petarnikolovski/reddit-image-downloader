@@ -6,6 +6,14 @@ from utils.politeness import get_politeness_factor
 from domainparsers.common import Domains
 
 
+__author__ = 'petarGitNik'
+__copyright__ = 'Copyright (c) 2017 petarGitNik petargitnik@gmail.com'
+__version__ = 'v0.1.0'
+__license__ = 'MIT'
+__email__ = 'petargitnik@gmail.com'
+__status__ = 'Development'
+
+
 def test_politeness_for_false_inputs():
     """
     Test politeness factor for False values.
