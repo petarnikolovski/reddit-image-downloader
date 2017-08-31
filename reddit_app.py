@@ -2,8 +2,7 @@
 
 
 """
-This is the GUI for the Reddit Downloader. Unfortunately, it freezes during download.
-This is probably because the tkinter is single threaded.
+This is the GUI for the Reddit Downloader.
 """
 
 
@@ -12,8 +11,13 @@ from domainparsers.reddit import RedditException
 from utils.downloader import Downloader
 from utils.downloader import DownloaderException
 
+import threading
+import queue
+from queue import Queue
+
 from tkinter import Tk
 from tkinter import Toplevel
+from tkinter import TclError
 from tkinter import Message
 from tkinter import Menu
 from tkinter import Frame
@@ -126,15 +130,35 @@ class RedditApp(Frame):
 
         progress_info.pack(side=TOP)
 
-        # Download bar
-        progress_frame = Frame(self)
+    def add_progress_bar(self):
+        """
+        Add progress bar to root frame.
+        """
+        self.progress_frame = Frame(self)
 
-        progress_bar = Progressbar(
-            progress_frame, orient='horizontal', length=400, mode='determinate'
+        self.progress_bar = Progressbar(
+            self.progress_frame, orient='horizontal', length=400, mode='indeterminate'
         )
-        progress_bar.pack(padx=10, pady=10)
+        #self.progress_bar = Progressbar(
+        #    progress_frame, orient='horizontal', length=400, mode='determinate'
+        #)
+        self.progress_bar.pack(padx=10, pady=10)
+        self.progress_frame.pack(side=TOP)
 
-        progress_frame.pack(side=TOP)
+    def remove_progress_bar(self):
+        """
+        Remove progress bare from root frame.
+        """
+        self.progress_bar.destroy()
+        self.progress_frame.destroy()
+
+    def change_progress_label(self, text):
+        """
+        Change text of progress bar label.
+        """
+        self.lbl_progress_info.configure(
+            text=text, fg='red', font=(font.BOLD)
+        )
 
     def choose_directory(self):
         """
@@ -149,35 +173,79 @@ class RedditApp(Frame):
         """
         try:
             reddit = Reddit(self.url_var.get(), self.pages_var.get())
-
-            #self.btn_download.configure(text='Cancel', command=self.cancel_download)
-            reddit.get_all_posts()
-
-            try:
-                downloader = Downloader(
-                    reddit, self.destination_var.get()
-                )
-
-                downloader.download_files()
-            except DownloaderException:
-                messagebox.showerror('Error', 'Invalid download path')
         except RedditException:
             messagebox.showerror('Error', 'Please input valid link')
-        except Exception:
+            return
+        except TclError:
             messagebox.showerror('Error', 'Please input only whole numbers')
+            return
+        except Exception as e:
+            print(e)
+            messagebox.showerror('Error', 'Something went wrong with Reddit.')
+            return
 
-        self.lbl_progress_info.configure(
-            text='Download complete...', fg='red', font=(font.BOLD)
-        )
+        try:
+            downloader = Downloader(reddit, self.destination_var.get())
+        except DownloaderException:
+            messagebox.showerror('Error', 'Invalid download path')
+            return
+        except Exception as e:
+            print(e)
+            messagebox.showerror('Error', 'Something went wrong with Downloader.')
+            return
+
+        self.btn_download.configure(text='Cancel', command=self.cancel_download)
+        self.change_progress_label('Fetching data...')
+
+        self.add_progress_bar()
+        self.progress_bar.start()
+        self.queue = Queue()
+
+        DownloadThread(self.queue, reddit, downloader).start()
+        self.root.after(100, self.process_queue)
+
+    def process_queue(self):
+        """
+        Stop the progress bar if the thread has yielded control.
+        """
+        try:
+            # You can print the message from the queue here
+            msg = self.queue.get(0)
+            self.progress_bar.stop()
+            self.change_progress_label('Download finished.')
+            # self.remove_progress_bar()
+        except queue.Empty:
+            self.root.after(100, self.process_queue)
 
     def cancel_download(self):
         """
         Cancel download process.
         """
         self.btn_download.configure(text='Download', command=self.download_reddit)
-        self.lbl_progress_info.configure(
-            text='Download canceled.', fg='red', font=(font.BOLD)
-        )
+        self.remove_progress_bar()
+        self.change_progress_label('Download canceled.')
+
+
+class DownloadThread(threading.Thread):
+    """
+    Start a download thread.
+    """
+
+    def __init__(self, queue, reddit, downloader):
+        threading.Thread.__init__(self)
+        self.queue = queue
+
+        self.reddit = reddit
+        self.downloader = downloader
+
+    def run(self):
+        """
+        Fetching of download links and downloading process are located here.
+        """
+        self.reddit.get_all_posts()
+        self.downloader.download_files()
+
+        self.queue.put('Downloading finished')
 
 
 class AboutWindow(object):
