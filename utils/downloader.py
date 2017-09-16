@@ -64,10 +64,15 @@ class Downloader(object):
     """
 
     def __init__(self, reddit, destination, verbose=False):
+        """
+        If variable self.downloading is set to False, download process is stopped.
+        """
         self.files = reddit.images
         self.total = reddit.count_downloadable_images()
         self.destination = self.valid_destination(destination)
         self.verbose = verbose
+
+        self.downloading = True
 
     def download_files(self):
         """
@@ -92,7 +97,7 @@ class Downloader(object):
 
         # Download, deal with exception, save to db, log things...
         currently_downloading = 1
-        while self.files:
+        while self.files and self.downloading:
             file_obj = self.files.popleft()
 
             image_url = file_obj['image']['url']

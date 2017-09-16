@@ -185,7 +185,7 @@ class RedditApp(Frame):
             return
 
         try:
-            downloader = Downloader(reddit, self.destination_var.get())
+            self.downloader = Downloader(reddit, self.destination_var.get())
         except DownloaderException:
             messagebox.showerror('Error', 'Invalid download path')
             return
@@ -201,7 +201,7 @@ class RedditApp(Frame):
         self.progress_bar.start()
         self.queue = Queue()
 
-        DownloadThread(self.queue, reddit, downloader).start()
+        DownloadThread(self.queue, reddit, self.downloader).start()
         self.root.after(100, self.process_queue)
 
     def process_queue(self):
@@ -211,8 +211,9 @@ class RedditApp(Frame):
         try:
             # You can print the message from the queue here
             msg = self.queue.get(0)
-            self.progress_bar.stop()
-            self.change_progress_label('Download finished.')
+            #self.progress_bar.stop()
+            print(msg)
+            #self.change_progress_label('Download finished.')
             # self.remove_progress_bar()
         except queue.Empty:
             self.root.after(100, self.process_queue)
@@ -221,6 +222,7 @@ class RedditApp(Frame):
         """
         Cancel download process.
         """
+        self.downloader.downloading = False
         self.btn_download.configure(text='Download', command=self.download_reddit)
         self.remove_progress_bar()
         self.change_progress_label('Download canceled.')
