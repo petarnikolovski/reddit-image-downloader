@@ -174,7 +174,7 @@ class RedditApp(Frame):
         Download images from subreddit.
         """
         try:
-            reddit = Reddit(self.url_var.get(), self.pages_var.get())
+            self.reddit = Reddit(self.url_var.get(), self.pages_var.get())
         except RedditException:
             messagebox.showerror('Error', 'Please input valid link')
             return
@@ -187,7 +187,7 @@ class RedditApp(Frame):
             return
 
         try:
-            self.downloader = Downloader(reddit, self.destination_var.get())
+            self.downloader = Downloader(self.reddit, self.destination_var.get())
         except DownloaderException:
             messagebox.showerror('Error', 'Invalid download path')
             return
@@ -203,7 +203,7 @@ class RedditApp(Frame):
         self.progress_bar.start()
         self.queue = Queue()
 
-        DownloadThread(self.queue, reddit, self.downloader).start()
+        DownloadThread(self.queue, self.reddit, self.downloader).start()
         self.root.after(100, self.process_queue)
 
     def process_queue(self):
