@@ -59,9 +59,14 @@ class RedditException(Exception):
 class Reddit(object):
 
     def __init__(self, url, pages):
+        """
+        If variable fetch is set to False, then stop fetching pages.
+        """
         self.url = self.sanitize(url)
         self.pages = self.normalize_pages(pages)
         self.images = deque() # consider changing images to posts
+
+        self.fetch = True
 
     def sanitize(self, url):
         """
@@ -124,7 +129,7 @@ class Reddit(object):
         page = 1 if self.pages else 0
         url = self.url # starting page
 
-        while (page <= self.pages) and crawl:
+        while self.fetch and (page <= self.pages) and crawl:
             soup = self.make_beautiful_soup(url, driver)
             pictures, next_page = self.get_files_from_a_page(soup, url)
 

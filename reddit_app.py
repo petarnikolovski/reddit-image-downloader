@@ -223,8 +223,9 @@ class RedditApp(Frame):
 
     def cancel_download(self):
         """
-        Cancel download process.
+        Cancel fetching or downloading process.
         """
+        self.reddit.fetch = False
         self.downloader.downloading = False
         self.btn_download.configure(text='Download', command=self.download_reddit)
         self.remove_progress_bar()
