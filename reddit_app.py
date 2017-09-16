@@ -29,6 +29,8 @@ from tkinter import messagebox
 from tkinter import StringVar
 from tkinter import IntVar
 from tkinter import Entry
+from tkinter import DISABLED
+from tkinter import NORMAL
 from tkinter import TOP
 from tkinter import E
 from tkinter import W
@@ -206,15 +208,16 @@ class RedditApp(Frame):
 
     def process_queue(self):
         """
-        Stop the progress bar if the thread has yielded control.
+        Stop the progress bar if the thread has yielded control. If download was
+        canceled, re-enable download button only after thread has yielded control.
         """
         try:
-            # You can print the message from the queue here
             msg = self.queue.get(0)
-            #self.progress_bar.stop()
+
+            if self.btn_download['state'] == DISABLED:
+                self.btn_download.configure(state=NORMAL)
+
             print(msg)
-            #self.change_progress_label('Download finished.')
-            # self.remove_progress_bar()
         except queue.Empty:
             self.root.after(100, self.process_queue)
 
@@ -226,6 +229,7 @@ class RedditApp(Frame):
         self.btn_download.configure(text='Download', command=self.download_reddit)
         self.remove_progress_bar()
         self.change_progress_label('Download canceled.')
+        self.btn_download.configure(state=DISABLED)
 
 
 class DownloadThread(threading.Thread):
