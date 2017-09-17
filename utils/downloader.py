@@ -35,6 +35,18 @@ from datetime import datetime
 from time import sleep
 
 
+class DownloaderListener(object):
+    """
+    Listents for changes in download progress. Variable should be:
+
+    currently_at = [int]
+    """
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
 class DownloaderException(Exception):
     """
     Raise this exception if there is something wrong with supplied path or with
@@ -73,6 +85,7 @@ class Downloader(object):
         self.verbose = verbose
 
         self.downloading = True
+        self.observers = []
 
     def download_files(self):
         """
@@ -171,6 +184,9 @@ class Downloader(object):
                 # write_a_record_to_db(c, file_obj, file_obj['last_http_status'], 0)
                 self.write_log(file_obj)
 
+            if self.observers:
+                self.update_observers(currently_at=currently_downloading)
+
         conn.commit()
         conn.close()
         os.chdir(current_directory)
@@ -241,3 +257,25 @@ class Downloader(object):
             f.write(''.join(['Post Comments -> ', post['link_to_comments'], '\n']))
             f.write(''.join(['Last HTTP status -> ', str(post['last_http_status']), '\n']))
             f.write('\n')
+
+    def register(self, observer):
+        """
+        Register an observer for Downloader class. If observer is already present
+        do not add it again.
+        """
+        if not observer in self.observers:
+            self.observers.append(observer)
+
+    def unregister(self):
+        """
+        Unregister all observers.
+        """
+        if self.observers:
+            del self.observers[:]
+
+    def update_observers(self, **kwargs):
+        """
+        Update all observers.
+        """
+        for observer in self.observers:
+            observer.update(**kwargs)
