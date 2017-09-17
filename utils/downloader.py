@@ -111,6 +111,10 @@ class Downloader(object):
         # Download, deal with exception, save to db, log things...
         currently_downloading = 1
         while self.files and self.downloading:
+
+            if self.observers:
+                self.update_observers(currently_at=currently_downloading)
+
             file_obj = self.files.popleft()
 
             image_url = file_obj['image']['url']
@@ -183,9 +187,6 @@ class Downloader(object):
             else:
                 # write_a_record_to_db(c, file_obj, file_obj['last_http_status'], 0)
                 self.write_log(file_obj)
-
-            if self.observers:
-                self.update_observers(currently_at=currently_downloading)
 
         conn.commit()
         conn.close()

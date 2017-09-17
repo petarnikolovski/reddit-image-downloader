@@ -10,6 +10,7 @@ from domainparsers.reddit import Reddit
 from domainparsers.reddit import RedditListener
 from domainparsers.reddit import RedditException
 from utils.downloader import Downloader
+from utils.downloader import DownloaderListener
 from utils.downloader import DownloaderException
 
 import threading
@@ -142,9 +143,6 @@ class RedditApp(Frame):
         self.progress_bar = Progressbar(
             self.progress_frame, orient='horizontal', length=400, mode='indeterminate'
         )
-        #self.progress_bar = Progressbar(
-        #    progress_frame, orient='horizontal', length=400, mode='determinate'
-        #)
         self.progress_bar.pack(padx=10, pady=10)
         self.progress_frame.pack(side=TOP)
 
@@ -207,6 +205,9 @@ class RedditApp(Frame):
         self.reddit_listener = RedditListener()
         self.reddit.register(self.reddit_listener)
 
+        self.downloader_listener = DownloaderListener()
+        self.downloader.register(self.downloader_listener)
+
         DownloadThread(self.queue, self.reddit, self.downloader).start()
         self.root.after(100, self.process_queue)
 
@@ -218,9 +219,6 @@ class RedditApp(Frame):
         try:
             msg = self.queue.get(0)
 
-            # Bring back the download button
-            # remove progress bar!
-            # iff the process was finished normally
             if self.btn_download['text'] == 'Cancel':
                 # self.reddit.fetch = True
                 # self.downloader.downloading = True
@@ -233,12 +231,23 @@ class RedditApp(Frame):
                 self.btn_download.configure(state=NORMAL)
 
             self.reddit.unregister()
+            self.downloader.unregister()
 
             print(msg)
         except queue.Empty:
             if getattr(self.reddit_listener, 'fetched', None):
                 print(self.reddit_listener.maximum)
+
+                self.progress_bar.configure(mode='determinate')
+                self.progress_bar['value'] = 0
+                self.progress_bar['maximum'] = self.reddit_listener.maximum
+
                 self.reddit_listener.fetched = False
+
+            if (getattr(self.downloader_listener, 'currently_at', None) and
+                    self.downloader.downloading):
+                print(self.downloader_listener.currently_at)
+                self.progress_bar['value'] = self.downloader_listener.currently_at
 
             self.root.after(100, self.process_queue)
 
