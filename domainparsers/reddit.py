@@ -49,6 +49,20 @@ __email__ = 'petargitnik@gmail.com'
 __status__ = 'Development'
 
 
+class RedditListener(object):
+    """
+    Listens for changes in fetching and number of fetched relevant links. Variables
+    should be:
+
+    fetching = [boolean] (False is a flag to stop fetching process)
+    maximum = [int] (number of links to be downloaded)
+    """
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
 class RedditException(Exception):
     """
     This exception is raised if supplied link is invalid.
