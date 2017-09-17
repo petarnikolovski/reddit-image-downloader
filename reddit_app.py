@@ -7,6 +7,7 @@ This is the GUI for the Reddit Downloader.
 
 
 from domainparsers.reddit import Reddit
+from domainparsers.reddit import RedditListener
 from domainparsers.reddit import RedditException
 from utils.downloader import Downloader
 from utils.downloader import DownloaderException
@@ -203,6 +204,9 @@ class RedditApp(Frame):
         self.progress_bar.start()
         self.queue = Queue()
 
+        self.reddit_listener = RedditListener()
+        self.reddit.register(self.reddit_listener)
+
         DownloadThread(self.queue, self.reddit, self.downloader).start()
         self.root.after(100, self.process_queue)
 
@@ -214,11 +218,19 @@ class RedditApp(Frame):
         try:
             msg = self.queue.get(0)
 
+            # Bring back the download button
+            # remove progress bar!
+            # iff the process was finished normally
+
             if self.btn_download['state'] == DISABLED:
                 self.btn_download.configure(state=NORMAL)
 
             print(msg)
         except queue.Empty:
+            if getattr(self.reddit_listener, 'fetched', None):
+                print(self.reddit_listener.maximum)
+                self.reddit_listener.fetched = False
+
             self.root.after(100, self.process_queue)
 
     def cancel_download(self):
