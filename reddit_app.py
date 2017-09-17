@@ -221,9 +221,18 @@ class RedditApp(Frame):
             # Bring back the download button
             # remove progress bar!
             # iff the process was finished normally
+            if self.btn_download['text'] == 'Cancel':
+                # self.reddit.fetch = True
+                # self.downloader.downloading = True
+
+                self.btn_download.configure(text='Download', command=self.download_reddit)
+                self.remove_progress_bar()
+                self.change_progress_label('Download finished.')
 
             if self.btn_download['state'] == DISABLED:
                 self.btn_download.configure(state=NORMAL)
+
+            self.reddit.unregister()
 
             print(msg)
         except queue.Empty:
