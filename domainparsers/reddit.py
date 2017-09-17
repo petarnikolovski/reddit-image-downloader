@@ -54,7 +54,7 @@ class RedditListener(object):
     Listens for changes in fetching and number of fetched relevant links. Variables
     should be:
 
-    fetching = [boolean] (False is a flag to stop fetching process)
+    fetched = [boolean] (False is a flag to stop fetching process)
     maximum = [int] (number of links to be downloaded)
     """
 
@@ -155,6 +155,13 @@ class Reddit(object):
             if not next_page: crawl = False
 
             sleep(crawl_time)
+
+        if self.fetch and self.observers:
+            # If fetching is not interupted, and there are observers
+            self.update_observers(
+                fetched=True,
+                maximum=self.count_downloadable_images()
+            )
 
         driver.close()
         return
