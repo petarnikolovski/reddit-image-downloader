@@ -215,6 +215,8 @@ class RedditApp(Frame):
         """
         Stop the progress bar if the thread has yielded control. If download was
         canceled, re-enable download button only after thread has yielded control.
+        Reset progress bar and download button, and unregister all listeners when
+        downloading is finished or canceled.
         """
         try:
             msg = self.queue.get(0)
