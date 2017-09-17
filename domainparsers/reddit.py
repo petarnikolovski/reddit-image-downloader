@@ -81,6 +81,7 @@ class Reddit(object):
         self.images = deque() # consider changing images to posts
 
         self.fetch = True
+        self.observers = []
 
     def sanitize(self, url):
         """
@@ -330,3 +331,25 @@ class Reddit(object):
         for post in self.images:
             if post['image']['url']: downloadable += 1
         return downloadable
+
+    def register(self, observer):
+        """
+        Register an observer for Reddit class. If the observer is already present
+        do not add it agian.
+        """
+        if not observer in self.observers:
+            self.observers.append(observer)
+
+    def unregister(self):
+        """
+        Unregister all observers.
+        """
+        if self.observers:
+            del self.observers[:]
+
+    def update_observers(self, **kwargs):
+        """
+        Update all observers.
+        """
+        for observer in self.observers:
+            observer.update(**kwargs)
